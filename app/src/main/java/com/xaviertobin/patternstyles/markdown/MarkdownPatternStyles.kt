@@ -1,5 +1,8 @@
 package com.xaviertobin.patternstyles.markdown
 
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -7,13 +10,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextIndent
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.xaviertobin.patternstyles.PatternStyle
+import com.xaviertobin.patternstyles.PatternAnnotation
 import java.util.regex.Pattern
 
 
-val QUOTE_BLOCK_PATTERN = PatternStyle(
+val QUOTE_BLOCK_PATTERN = PatternAnnotation(
     pattern = Pattern.compile("(?<=^)(>.*\\n?)|(?<=\\n)(>.*\\n?)"),
     spanStyle = { SpanStyle(fontSize = 16.sp) },
     paragraphStyle = {
@@ -26,10 +30,22 @@ val QUOTE_BLOCK_PATTERN = PatternStyle(
             )
         )
     },
-    paragraphBackgroundTag = "quoteBlock"
+    drawParagraphBackground = { rect ->
+        val fullWidthRect = rect.copy(
+            right = size.width
+        )
+        drawRoundRect(
+            color = Color.LightGray,
+            topLeft = fullWidthRect.topLeft,
+            size = fullWidthRect.size,
+            cornerRadius = CornerRadius(
+                10.dp.toPx(), 10.dp.toPx()
+            )
+        )
+    }
 )
 
-val INLINE_CODE = PatternStyle(
+val INLINE_CODE = PatternAnnotation(
     pattern = Pattern.compile("`[^`\\s]+`|(?<=[^`])``(?=[^`])"),
     spanStyle = {
         SpanStyle(
@@ -38,7 +54,7 @@ val INLINE_CODE = PatternStyle(
     }
 )
 
-val CODE_BLOCK = PatternStyle(
+val CODE_BLOCK = PatternAnnotation(
     pattern = Pattern.compile(
         "```[^` ][^`]*[^ ]?```",
     ),
@@ -61,10 +77,19 @@ val CODE_BLOCK = PatternStyle(
             )
         )
     },
-    paragraphBackgroundTag = "codeBlock"
+    drawParagraphBackground = { rect ->
+        drawRoundRect(
+            color = Color.LightGray,
+            topLeft = rect.topLeft,
+            size = Size(4.dp.toPx(), rect.height),
+            cornerRadius = CornerRadius(
+                10.dp.toPx(), 10.dp.toPx()
+            )
+        )
+    }
 )
 
-val HEADERS = PatternStyle(
+val HEADERS = PatternAnnotation(
     pattern = Pattern.compile("^(#{1,6}) .*$", Pattern.MULTILINE),
     spanStyle = {
         SpanStyle(

@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles.demo
+package com.xaviertobin.patternstyles.compose.demo
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.material3.Text
@@ -7,25 +7,24 @@ import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.em
-import com.xaviertobin.patternstyles.basicPatternStyle
-import com.xaviertobin.patternstyles.rememberRichPatternAnnotatedString
+import com.xaviertobin.patternstyles.basicPatternAnnotation
+import com.xaviertobin.patternstyles.compose.richAnnotated
 
 
-val usernamePatternStyle = basicPatternStyle(
-    pattern = "@[A-Za-z0-9_]+",
+val manualInlineContent = basicPatternAnnotation(
+    pattern = "tomato",
     inlineContentTag = "username",
 )
 
 @Composable
 fun CustomComposableExample() {
 
-    val highlightedFruit = rememberRichPatternAnnotatedString(
-        text = "Carrot \uD83C\uDF45 Tomato Apple Potato",
-        patternStyles = listOf(usernamePatternStyle)
+    val highlightedFruit = "I LOVE tomatoes".richAnnotated(
+        patternAnnotations = listOf(manualInlineContent)
     )
 
     val inlineContent = mapOf(
-        "username" to emojiInlineContent("🍅")
+        "tomato" to emojiInlineContent("🍅")
     )
 
     Text(text = highlightedFruit.annotatedString, inlineContent = inlineContent)

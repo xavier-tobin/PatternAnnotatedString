@@ -19,7 +19,7 @@ data class ParagraphBackgroundsResult(
 
 data class BackgroundsToDraw(
     val rect: Rect,
-    val tag: String
+    val onDraw: OnDrawBackground
 )
 
 @Composable
@@ -41,9 +41,9 @@ fun useParagraphBackgrounds(
 }
 
 
-fun Modifier.drawParagraphBackgrounds(backgroundsToDraw: List<BackgroundsToDraw>, onDraw: DrawScope.(BackgroundsToDraw) -> Unit) = this.drawBehind {
+fun Modifier.drawParagraphBackgrounds(backgroundsToDraw: List<BackgroundsToDraw>) = this.drawBehind {
     backgroundsToDraw.forEach { backgroundToDraw ->
-        onDraw(backgroundToDraw)
+        backgroundToDraw.onDraw(this, backgroundToDraw.rect)
     }
 }
 
@@ -52,14 +52,14 @@ fun calculateParagraphBackgrounds(
     paragraphBackgroundAnnotations: List<ParagraphBackgroundAnnotation>,
     textLayoutResult: TextLayoutResult
 ): List<BackgroundsToDraw> {
-    return paragraphBackgroundAnnotations.map { (startIndex, endIndex, tag) ->
+    return paragraphBackgroundAnnotations.map { (startIndex, endIndex, onDraw) ->
         BackgroundsToDraw(
             rect = getParagraphBounds(
                 textLayoutResult = textLayoutResult,
                 startLine = textLayoutResult.getLineForOffset(startIndex),
                 endLine = textLayoutResult.getLineForOffset(endIndex),
             ),
-            tag = tag
+            onDraw = onDraw
         )
     }
 }

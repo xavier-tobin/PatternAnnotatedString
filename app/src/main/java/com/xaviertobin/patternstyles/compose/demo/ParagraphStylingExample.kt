@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles.demo
+package com.xaviertobin.patternstyles.compose.demo
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.OutlinedTextField
@@ -22,10 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.xaviertobin.noted.compose.components.core.ScrollPreviewLayout
-import com.xaviertobin.patternstyles.PatternStyle
+import com.xaviertobin.patternstyles.PatternAnnotation
+import com.xaviertobin.patternstyles.compose.richAnnotated
 import com.xaviertobin.patternstyles.drawParagraphBackgrounds
-import com.xaviertobin.patternstyles.rememberRichPatternAnnotatedString
 import com.xaviertobin.patternstyles.useParagraphBackgrounds
 import java.util.regex.Pattern
 
@@ -34,11 +33,10 @@ import java.util.regex.Pattern
 /**
  * Custom paragraph styling requires using the base PatternStyle, not `basicPatternStyle`.
  */
-val codeBlockStyle = PatternStyle(
+val codeBlockStyle = PatternAnnotation(
     pattern = Pattern.compile(
         "```[^` ][^`]*[^ ]?```",
     ),
-    paragraphBackgroundTag = "codeBlock",
     spanStyle = {
         SpanStyle(
             fontFamily = FontFamily.Monospace,
@@ -58,9 +56,22 @@ val codeBlockStyle = PatternStyle(
             ),
         )
     },
+    drawParagraphBackground = { rect ->
+        val fullWidthRect = rect.copy(
+            right = size.width
+        )
+        drawRoundRect(
+            color = Color.LightGray,
+            topLeft = fullWidthRect.topLeft,
+            size = fullWidthRect.size,
+            cornerRadius = CornerRadius(
+                10.dp.toPx(), 10.dp.toPx()
+            )
+        )
+    }
 )
 
-val quoteBlockStyle = PatternStyle(
+val quoteBlockStyle = PatternAnnotation(
     pattern = Pattern.compile("(?<=^)(>.*\\n?)|(?<=\\n)(>.*\\n?)"),
     spanStyle = { SpanStyle(fontSize = 16.sp) },
     paragraphStyle = {
@@ -73,16 +84,24 @@ val quoteBlockStyle = PatternStyle(
             )
         )
     },
-    paragraphBackgroundTag = "quoteBlock"
+    drawParagraphBackground = { rect ->
+        drawRoundRect(
+            color = Color.LightGray,
+            topLeft = rect.topLeft,
+            size = Size(4.dp.toPx(), rect.height),
+            cornerRadius = CornerRadius(
+                10.dp.toPx(), 10.dp.toPx()
+            )
+        )
+    }
 )
 
 @Composable
 fun ParagraphStyling() {
 
     var textWithCodeBlock by remember { mutableStateOf( "Normal text\n```\ncode();\n```\nNormal text\n> Insert famous quote here") }
-    val result = rememberRichPatternAnnotatedString(
-        text = textWithCodeBlock,
-        patternStyles = listOf(codeBlockStyle, quoteBlockStyle)
+    val result = textWithCodeBlock.richAnnotated(
+        patternAnnotations = listOf(codeBlockStyle, quoteBlockStyle)
     )
     val (backgrounds, onTextLayout) = useParagraphBackgrounds(
         paragraphBackgroundAnnotations = result.paragraphBackgroundAnnotations
@@ -97,31 +116,7 @@ fun ParagraphStyling() {
         text = result.annotatedString,
         modifier = Modifier
             .fillMaxWidth()
-            .drawParagraphBackgrounds(backgrounds) {
-                if (it.tag == "codeBlock") {
-                    val fullWidthRect = it.rect.copy(
-                        right = size.width
-                    )
-                    drawRoundRect(
-                        color = Color.LightGray,
-                        topLeft = fullWidthRect.topLeft,
-                        size = fullWidthRect.size,
-                        cornerRadius = CornerRadius(
-                            10.dp.toPx(), 10.dp.toPx()
-                        )
-                    )
-                } else {
-
-                    drawRoundRect(
-                        color = Color.LightGray,
-                        topLeft = it.rect.topLeft,
-                        size = Size(4.dp.toPx(), it.rect.height),
-                        cornerRadius = CornerRadius(
-                            10.dp.toPx(), 10.dp.toPx()
-                        )
-                    )
-                }
-            },
+            .drawParagraphBackgrounds(backgrounds),
         onTextLayout = onTextLayout,
     )
 

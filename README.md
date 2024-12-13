@@ -7,8 +7,8 @@ The library includes support for the features you might use in `buildAnnotatedSt
 backgrounds and an easy way to manage inline Composable content, like username handles.
 
 ## Basic usage
-1. Create a `PatternStyle` which maps a pattern to some styles
-2. Use `rememberPatternAnnotatedString()` to apply the styles to a string.
+1. Create a `PatternAnnotation`.
+2. Use `string.annotated(patternStyles)` to apply the styles to a string.
 
 ```kotlin
 
@@ -22,9 +22,8 @@ fun BasicExample() {
 
     val textToStyle = "I like strawberries, carrots, and apples."
 
-    val redFruit = rememberPatternAnnotatedString(
-        text = textToStyle,
-        patternStyles = listOf(redFruit)
+    val redFruit = textToStyle.annotated(
+       with = listOf(highlightFruit)
     )
 
     Text(text = redFruit)
@@ -32,7 +31,8 @@ fun BasicExample() {
 ```
 
 Result:
-// image
+
+
 
 ##
 

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.xaviertobin.patternstyles.PatternAnnotation
-import com.xaviertobin.patternstyles.compose.richAnnotated
+import com.xaviertobin.patternstyles.compose.annotatedRich
 import com.xaviertobin.patternstyles.drawParagraphBackgrounds
 import com.xaviertobin.patternstyles.useParagraphBackgrounds
 import java.util.regex.Pattern
@@ -100,7 +100,7 @@ val quoteBlockStyle = PatternAnnotation(
 fun ParagraphStyling() {
 
     var textWithCodeBlock by remember { mutableStateOf( "Normal text\n```\ncode();\n```\nNormal text\n> Insert famous quote here") }
-    val result = textWithCodeBlock.richAnnotated(
+    val result = textWithCodeBlock.annotatedRich(
         patternAnnotations = listOf(codeBlockStyle, quoteBlockStyle)
     )
     val (backgrounds, onTextLayout) = useParagraphBackgrounds(

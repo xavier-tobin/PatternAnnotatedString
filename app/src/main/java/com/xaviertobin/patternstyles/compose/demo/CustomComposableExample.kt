@@ -8,7 +8,7 @@ import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.em
 import com.xaviertobin.patternstyles.basicPatternAnnotation
-import com.xaviertobin.patternstyles.compose.richAnnotated
+import com.xaviertobin.patternstyles.compose.annotatedRich
 
 
 val manualInlineContent = basicPatternAnnotation(
@@ -19,7 +19,7 @@ val manualInlineContent = basicPatternAnnotation(
 @Composable
 fun CustomComposableExample() {
 
-    val highlightedFruit = "I LOVE tomatoes".richAnnotated(
+    val highlightedFruit = "I LOVE tomatoes".annotatedRich(
         patternAnnotations = listOf(manualInlineContent)
     )
 

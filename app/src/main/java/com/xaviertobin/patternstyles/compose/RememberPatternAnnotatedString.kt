@@ -30,10 +30,10 @@ data class RichPatternAnnotatedString(
  * Also returns detected inline content to render custom views
  */
 @Composable
-fun String.richAnnotated(
+fun String.annotatedRich(
     patternAnnotations: List<PatternAnnotation>
 ): RichPatternAnnotatedString {
-    
+
     var richPatternAnnotatedString by remember {
         mutableStateOf(
             RichPatternAnnotatedString(
@@ -62,7 +62,7 @@ fun String.richAnnotated(
 fun String.annotated(
     patternAnnotations: List<PatternAnnotation>
 ): AnnotatedString {
-    return this.richAnnotated(patternAnnotations).annotatedString
+    return this.annotatedRich(patternAnnotations).annotatedString
 }
 
 /**

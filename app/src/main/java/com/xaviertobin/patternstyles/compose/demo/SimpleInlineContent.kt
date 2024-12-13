@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.xaviertobin.patternstyles.PatternAnnotation
-import com.xaviertobin.patternstyles.compose.richAnnotated
+import com.xaviertobin.patternstyles.compose.annotatedRich
 import com.xaviertobin.patternstyles.simpleInlineTextContent
 import java.util.regex.Pattern
 
@@ -50,7 +50,7 @@ fun usernamePill(username: String): InlineTextContent {
 @Composable
 fun SimpleInlineExample() {
 
-    val highlightedFruit = "Thanks for making this library @xavier, it's cool!".richAnnotated(
+    val highlightedFruit = "Thanks for making this library @xavier, it's cool!".annotatedRich(
         patternAnnotations = listOf(usernameAnnotation)
     )
 

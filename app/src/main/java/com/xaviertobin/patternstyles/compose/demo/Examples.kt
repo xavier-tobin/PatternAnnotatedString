@@ -33,11 +33,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.xaviertobin.patternstyles.PerformanceStrategy
 import com.xaviertobin.patternstyles.basicPatternAnnotation
 import com.xaviertobin.patternstyles.annotatedWith
 import com.xaviertobin.patternstyles.drawParagraphBackgrounds
-import com.xaviertobin.patternstyles.getPatternAnnotatedString
+import com.xaviertobin.patternstyles.patternAnnotatedString
 import com.xaviertobin.patternstyles.inlineContent
 import com.xaviertobin.patternstyles.inlineContentPatternAnnotation
 import com.xaviertobin.patternstyles.paragraphPatternAnnotation
@@ -184,7 +183,7 @@ const val multiParagraphText = "```\ncode();\n```\n\nNormal text"
 @Composable
 fun ParagraphStyling() {
 
-    val annotated = multiParagraphText.getPatternAnnotatedString(
+    val annotated = multiParagraphText.patternAnnotatedString(
         patternAnnotation = codeBlockAnnotation
     )
 
@@ -244,7 +243,7 @@ val usernameAnnotation = inlineContentPatternAnnotation(
 @Composable
 fun SimpleInlineExample() {
 
-    val styledComment = "Thanks @xavier, this is cool!".getPatternAnnotatedString(
+    val styledComment = "Thanks @xavier, this is cool!".patternAnnotatedString(
         patternAnnotation = usernameAnnotation
     )
 
@@ -300,7 +299,7 @@ val italics = basicPatternAnnotation(
 @Composable
 fun CombinedExample() {
 
-    val styledComment = "Thanks @xavier, this is _cool!_ I would like to give you an apple to say thanks :)".getPatternAnnotatedString(
+    val styledComment = "Thanks @xavier, this is _cool!_ I would like to give you an apple to say thanks :)".patternAnnotatedString(
         patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
     )
 

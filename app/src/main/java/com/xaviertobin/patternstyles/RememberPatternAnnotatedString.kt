@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.AnnotatedString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 data class PatternAnnotatedString(
     val annotatedString: AnnotatedString,
@@ -25,7 +24,7 @@ data class PatternAnnotatedString(
  * Also returns detected inline content to render custom views
  */
 @Composable
-fun String.getPatternAnnotatedString(
+fun String.patternAnnotatedString(
     patternAnnotations: List<PatternAnnotation>,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): PatternAnnotatedString {
@@ -57,7 +56,7 @@ fun String.getPatternAnnotatedString(
         if (!isImmediate) {
             launch(Dispatchers.Default) {
                 patternAnnotatedString = patternAnnotations
-                    .calculatePatternAnnotatedString(this@getPatternAnnotatedString)
+                    .calculatePatternAnnotatedString(this@patternAnnotatedString)
             }
         }
     }
@@ -66,11 +65,11 @@ fun String.getPatternAnnotatedString(
 }
 
 @Composable
-fun String.getPatternAnnotatedString(
+fun String.patternAnnotatedString(
     patternAnnotation: PatternAnnotation,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): PatternAnnotatedString {
-    return this.getPatternAnnotatedString(
+    return this.patternAnnotatedString(
         patternAnnotations = listOf(patternAnnotation),
         performanceStrategy = performanceStrategy
     )
@@ -81,7 +80,7 @@ fun String.annotatedWith(
     patternAnnotations: List<PatternAnnotation>,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): AnnotatedString {
-    return this.getPatternAnnotatedString(
+    return this.patternAnnotatedString(
         patternAnnotations = patternAnnotations,
         performanceStrategy = performanceStrategy
     ).annotatedString
@@ -92,7 +91,7 @@ fun String.annotatedWith(
     patternAnnotation: PatternAnnotation,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): AnnotatedString {
-    return this.getPatternAnnotatedString(
+    return this.patternAnnotatedString(
         patternAnnotations = listOf(patternAnnotation),
         performanceStrategy = performanceStrategy
     ).annotatedString

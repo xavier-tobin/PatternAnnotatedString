@@ -1,14 +1,17 @@
 # PatternAnnotatedString
 
-Easily and dynamically style text using pattern/regular expressions in Jetpack Compose.
+Easily and dynamically style text using patterns/regular expressions in Jetpack Compose.
 
 - [x] 📝 Alternative to `buildAnnotatedString` for dynamic text
-- [x] 🧩 Supports inline styles
-- [x] 🎨 Highly flexible, simple Compose-ready API
-- [x] 🚀 Respects compose lifecycle with performance options
+- [x] 🎨 Simple, highly flexible Composeable API
+- [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
+- [x] 🧩 Easily render custom inline content
 
 # Usage
+
+The library has a very simple public API and in most cases you can add dynamic styles to text with
+just a few lines of code.
 
 ## Basic example
 
@@ -21,7 +24,6 @@ val redFruit = basicPatternAnnotation(
     spanStyle = SpanStyle(color = Color.Red)
 )
 
-@Preview
 @Composable
 fun BasicExample() {
     Text(
@@ -52,45 +54,99 @@ This is easy to achieve with this library, but there are some performance consid
    `PerformanceStrategy.Performant` option.
 
 ```kotlin
-@Preview
 @Composable
-fun SearchTextHighlighting() {
+fun SearchQueryHighlighting() {
 
     var searchQuery by remember { mutableStateOf("") }
 
-    val highlightAnnotation = remember(searchQuery) {
+    val highlightMatching = remember(searchQuery) {
         basicPatternAnnotation(
             pattern = searchQuery,
-            spanStyle = SpanStyle(
-                background = Color.Yellow,
-            )
+            spanStyle = SpanStyle(background = Color.Yellow)
         )
     }
 
     val highlightedText = textToHighlight.annotatedWith(
-        patternAnnotation = highlightAnnotation,
+        patternAnnotation = highlightMatching,
         performanceStrategy = PerformanceStrategy.Performant
     )
-
 
     TextField(
         value = searchQuery,
         onValueChange = { searchQuery = it }
     )
 
-    Text(
-        text = highlightedText,
-        modifier = Modifier.padding(top = 10.dp)
-    )
+    Text(highlightedText)
 
 }
 ```
 
 > [!NOTE]
-> Note the two methods to avoid slow re-compositions when using dynamic patterns:
+> Note the two simple methods to avoid slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
 > 2. Use the `PerformanceStrategy.Performant` option when calling `annotatedWith`. This will
-     mean that text is styled in a background thread, and lead to a *slight* delay in the styles being visible.
+     mean that text is styled in a background thread, and lead to a *slight* delay in the styles
+     being visible.
 
+## Paragraph styling
 
+By default, AnnotatedString + ParagraphStyles only support changing text arrangement/layout
+properties for paragraphs. This library adds the ability to draw custom backgrounds behind
+paragraphs which can render be used, for example, to render basic code or quote blocks.
+
+1. Create a `PatternAnnotation` using `paragraphPatternAnnotation()` with Paragraph styles and/or
+   backgrounds.
+2. Use `string.getPatternAnnotatedString()` to apply the style/s to a string. Unlike `annotatedWith`
+   which only returns an `AnnotatedString`, this function returns a `PatternAnnotatedString` which
+   includes annotations for backgrounds & inline content.
+3. Use `useParagraphBackgrounds` if you want to draw paragraph backgrounds.
+4. Pass the annotatedString and `useParagraphBackgrounds` result to a `Text` composable.
+
+```kotlin
+// This is a more complex pattern annotation, but it's still pretty simple!
+val codeBlockAnnotation = paragraphPatternAnnotation(
+    pattern = "```[^` ][^`]*[^ ]?```",
+    spanStyle = SpanStyle(fontFamily = FontFamily.Monospace),
+    paragraphStyle = ParagraphStyle(
+        // Customise the text alignment, line spacing, etc.
+    ),
+    onDrawParagraphBackground = { rect ->
+        val fullWidthRect = rect.copy(
+            right = size.width
+        )
+        drawRoundRect(
+            color = Color.LightGray,
+            topLeft = fullWidthRect.topLeft,
+            size = fullWidthRect.size,
+            cornerRadius = CornerRadius(
+                10.dp.toPx(), 10.dp.toPx()
+            )
+        )
+    }
+)
+
+@Composable
+fun ParagraphStyling() {
+
+    val annotated = multiParagraphText.getPatternAnnotatedString(
+        patternAnnotation = codeBlockAnnotation
+    )
+
+    val backgroundsResult = useParagraphBackgrounds(
+        paragraphBackgroundAnnotations = annotated.paragraphBackgroundAnnotations
+    )
+
+    PreviewLayout {
+        Text(
+            text = annotated.annotatedString,
+            onTextLayout = backgroundsResult.onTextLayout,
+            modifier = Modifier
+                .fillMaxWidth()
+                .drawParagraphBackgrounds(backgroundsResult.backgroundsToDraw),
+        )
+    }
+
+}
+
+```

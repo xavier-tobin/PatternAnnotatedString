@@ -113,10 +113,7 @@ fun SearchTextHighlighting() {
     }
 
     val highlightedText = TEXT_TO_SEARCH.annotatedWith(
-        patternAnnotation = highlightAnnotation,
-        // This means that annotations will be calculated in a background thread
-        // The text will be un-styled until the annotations are calculated
-        performanceStrategy = PerformanceStrategy.Performant
+        patternAnnotation = highlightAnnotation
     )
 
     PreviewLayout {

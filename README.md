@@ -33,8 +33,9 @@ just a few lines of code. All you have to do is:
 
 # Advanced usage
 
-PatternAnnotatedString supports some features that AnnotatedString does not, including paragraph
-backgrounds. It also makes it much easier to render custom inline `@Composable` content.
+PatternAnnotatedString supports some features that `AnnotatedString` does not (out of the box),
+including paragraph backgrounds. It also makes it much easier to render custom inline `@Composable`
+content.
 
 1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
     ```kotlin

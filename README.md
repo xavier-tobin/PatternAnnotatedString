@@ -59,7 +59,8 @@ content.
 
 # Examples
 
-For basic text styling, you can use `basicPatternAnnotation` and `string.annotatedWith()`:
+## Basic text styling
+You can use `basicPatternAnnotation` and `string.annotatedWith()` to easily add styles to text:
 
 ```kotlin
 val redFruit = basicPatternAnnotation(

@@ -52,7 +52,7 @@ import com.xaviertobin.patternstyles.useParagraphBackgrounds
 
 val redFruit = basicPatternAnnotation(
     pattern = "(\\w*berry)|(\\w{0,}apple)",
-    spanStyle = SpanStyle(color = Color.Red)
+    spanStyle = SpanStyle(color = Color.Red, fontWeight = FontWeight.Bold)
 )
 
 @Preview

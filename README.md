@@ -46,12 +46,12 @@ is still simple:
     )
     // You can also use paragraphPatternAnnotation for custom paragraph styles
     ```
-   
+
 2. Use `string.getPatternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
     ```kotlin   
     val result = "Thanks @xavier, this is cool!".patternAnnotatedString(inlineContentAnnotation)
     ```
-   
+
 3. Use the result, which contains an `AnnotatedString`, `inlineContentMap` and
    `paragraphBackgroundAnnotations`. See examples further below for how to use them!
 
@@ -73,16 +73,14 @@ fun BasicExample() {
 }
 ```
 
-*Result:*
-
-![Basic Example](images/basic_example.png)
-
-
 > [!NOTE]
 > `annotatedWith` is a Composable function and only re-calculates styles if the text or
 > annotations/s change.
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
+
+*Result:*
+![Basic Example](images/basic_example.png)
 
 ## Search text highlighting (& other dynamic patterns)
 
@@ -91,7 +89,8 @@ For example, you may want to highlight matching text based on a search query the
 
 __This is easy to achieve with this library, but there are some performance considerations:__
 
-1. Create a `PatternAnnotation` with a dynamic pattern, wrapped in a `remember` block.
+1. Create a `PatternAnnotation` with a dynamic pattern inside the Composable, wrapped in a`remember`
+   block.
 2. Use `string.annotatedWith()` to apply the style/s to a string with the
    `PerformanceStrategy.Performant` option.
 
@@ -119,17 +118,19 @@ fun SearchQueryHighlighting() {
     )
 
     Text(highlightedText)
-
 }
 ```
-
 > [!NOTE]
-> Note the two simple methods to avoid slow re-compositions when using dynamic patterns:
+> Note the two simple methods to avoid too many or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
 > 2. Use the `PerformanceStrategy.Performant` option when calling `annotatedWith`. This will
      mean that text is styled in a background thread, and lead to a *slight* delay in the styles
      being visible.
+
+*Result:*
+![Search result highlighting](images/search_result_highlighting.webp)
+
 
 ## Inline content
 

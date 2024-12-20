@@ -12,8 +12,8 @@ Easily and dynamically style text using pattern/regular expressions in Jetpack C
 
 ## Basic example
 
-1. Create a `PatternAnnotation` which maps a pattern to styles.
-2. Use `string.annotatedWith()` to create an `AnnotatedString` with the styles applied.
+1. Create a `PatternAnnotation` (or multiple) which associates a pattern to some styles.
+2. Use `string.annotatedWith()` to create an `AnnotatedString` with the style/s applied.
 
 ```kotlin
 val redFruit = basicPatternAnnotation(
@@ -25,8 +25,6 @@ val redFruit = basicPatternAnnotation(
 @Composable
 fun BasicExample() {
     Text(
-        // annotatedWith accepts either one or a list of PatternAnnotations
-        // So you can apply multiple styles to the same text
         text = "Strawberry Fridge Apple Ferrari".annotatedWith(redFruit)
     )
 }
@@ -39,8 +37,10 @@ fun BasicExample() {
 > [!NOTE]
 > `annotatedWith` is a Composable function and only re-calculates styles if the text or
 > annotations/s change.
-> Many styles, long text or complicated patterns may impact performance, but the library includes
+> Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
+
+
 
 ## Search text highlighting (& other dynamic patterns)
 
@@ -60,7 +60,7 @@ fun SearchTextHighlighting() {
 
     var searchQuery by remember { mutableStateOf("") }
 
-    // For performance reasons, you should remember the pattern annotation with the search query as a key
+    // Remember the pattern annotation with the search query as a key to avoid rebuilding it on every recomposition
     val highlightAnnotation = remember(searchQuery) {
         basicPatternAnnotation(
             pattern = searchQuery,

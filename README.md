@@ -109,7 +109,7 @@ fun BasicExample() {
 
 > Search text highlighting, find in page etc.
 
-You may want to style text based on a pattern you don't know at compile-time. For example, 
+You may want to style text based on a pattern you don't know at compile-time. For example,
 highlighting matching text in results from a search query the user inputs. This is _easy_ to
 achieve with this library, but there are some important considerations to note:
 
@@ -239,9 +239,8 @@ fun ParagraphAlignmentExample() {
 > Custom backgrounds behind paragraphs, as well as text styling and line height adjustments
 
 It is not possible to draw custom backgrounds with `ParagraphStyle` - you can only change text
-arrangement/layout properties. To support custom backgrounds, `PatternAnnotatedString` includes a
-few helper functions to make it easy to draw custom backgrounds behind paragraphs which be used, for
-example, to render basic code or quote blocks.
+arrangement/layout properties. To fix this, `PatternAnnotatedString` includes a few helper 
+functions and APIs that make paragraph backgrounds easy to implement.
 
 __Paragraph background styling steps:__
 

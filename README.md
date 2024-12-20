@@ -124,7 +124,7 @@ fun SearchQueryHighlighting() {
     Text(highlightedText)
 }
 ```
-####### Result:
+###### Result:
 ![Search result highlighting](images/search_result_highlighting.webp)
 
 > [!NOTE]

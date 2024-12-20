@@ -98,9 +98,8 @@ fun BasicExample() {
 ## Search text highlighting (& other dynamic patterns)
 
 You may want to use pattern-based styling when you don't know the pattern at compile-time.
-For example, highlighting matching results based on a search query the user inputs.
-
-This is easy to achieve with this library, but there are some performance considerations:
+For example, highlighting matching results based on a search query the user inputs. This is easy to
+achieve with this library, but there are some performance considerations to note:
 
 ```kotlin
 @Composable
@@ -134,12 +133,12 @@ fun SearchQueryHighlighting() {
 ![Search result highlighting](images/search_result_highlighting.webp)
 
 > [!WARNING]
-> Note the two simple methods to avoid too many or slow re-compositions when using dynamic patterns:
+> Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
-> 2. Use the `PerformanceStrategy.Performant` option when calling `annotatedWith`. This will
-     mean that text is styled in a background thread, and lead to a *slight* delay in the styles
-     being visible.
+> 2. When immediacy is not crucial, use the `PerformanceStrategy.Performant` option when calling
+     `annotatedWith()` or `patternAnnotatedString()`. This means that text is styled in a
+     background thread and leads to a *slight* delay in the styles becoming visible.
 
 ## Inline content
 
@@ -155,7 +154,7 @@ val usernameAnnotation = inlineContentPatternAnnotation(
     inlineContent = { matchedText ->
         inlineTextContent(width = 7.3.em, height = 1.8.em) {
             // You can use any composable here, but make sure it fits within the above bounds^
-            Pill(usernameToNameMap[matchedText] ?: matchedText)
+            UsernamePill(matchedText)
         }
     }
 )
@@ -176,13 +175,18 @@ fun SimpleInlineExample() {
 
 ![Inline content example](images/inline_example.png)
 
+> [!TIP]
+> If you need to render inline content using, say, data fetched from an API, you can generate your
+> pattern annotation in the Composable, but make sure to use `remember(key1 = isDataReady)` to avoid
+> rebuilding the pattern on every recomposition.
+
 ## Paragraph styling
 
 By default, `AnnotatedString` and `ParagraphStyle`s only support changing the paragraph's text
 arrangement/layout properties. `PatternAnnotatedString` includes the ability to draw custom
 backgrounds behind paragraphs which be used, for example, to render basic code or quote blocks.
 
-__Steps:__
+__Paragraph background styling steps:__
 
 1. Create a `PatternAnnotation` using `paragraphPatternAnnotation()` with Paragraph styles and/or
    backgrounds.
@@ -249,3 +253,38 @@ fun ParagraphStyling() {
 > You don't have to use the `onDrawParagraphBackground` parameter. If all you need to is change the
 > Paragraph text properties, like alignment and line height, just pass the pattern and
 `paragraphStyle` to `paragraphPatternAnnotation()`
+
+> [!WARNING]
+> There are a few things to keep in mind when styling paragraphs with this library:
+> 1. Overlapping paragraphs will cause a crash! Ensure that your patterns are mutually exclusive.
+> 2. Backgrounds are drawn on the main thread, so keep them simple.
+> 3. Backgrounds only appear on the second re-composition, so keep this in mind when designing your
+     UI.
+
+## Multiple/combined annotations
+
+You are not limited to one pattern annotation (or type of pattern annotation) when styling a
+string - both `annotatedWith()` and `patternAnnotatedString()` can take a list of annotations.
+
+This makes it easy to create rich, custom text styles:
+
+```kotlin
+@Composable
+fun CombinedExample() {
+    val styledComment =
+        "Thanks @xavier, this is _cool!_ I would like to give you an apple to say thanks :)".patternAnnotatedString(
+            patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
+        )
+
+    PreviewLayout {
+        Text(
+            text = styledComment.annotatedString,
+            inlineContent = styledComment.inlineContentMap
+        )
+    }
+}
+```
+
+###### Result:
+
+![Combined example](images/mixed_example.png)

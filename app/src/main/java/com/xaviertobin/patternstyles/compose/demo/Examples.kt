@@ -65,8 +65,6 @@ fun BasicItalicsExample() {
     }
 }
 
-
-
 /**
  * # Basic styling
 */
@@ -89,24 +87,7 @@ fun BasicExample() {
 }
 
 /**
- * #### Note
- *
- * `annotatedWith` is a Composable function and only re-calculates styles if the text or annotations/s change.
- * Many styles, long text or complicated patterns may impact performance, but the library includes
- * options to cater for this - please see the Performance considerations section.
- */
-
-
-/**
- * ## Search text highlighting (& other dynamic patterns)
- * 
- * There are many use-cases for styling whereby you may not know the pattern at compile-time.
- * For example, you may want to highlight matching text based on a search query.
- * This is easy to achieve, but there are some performance considerations.
- * 
- * 1. Create a `PatternAnnotation` with a dynamic pattern, wrapped in a `remember` block.
- * 2. Use `string.annotatedWith()` to apply the style/s to a string with the PerformanceStrategy.Performant option.
- * 
+ * ## Search text highlighting
  */
 
 const val TEXT_TO_SEARCH = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
@@ -153,17 +134,8 @@ fun SearchTextHighlighting() {
 
 /**
  * ## Paragraph styling
- *
- * By default, AnnotatedString and Paragraph Style only supports changing text arrangement/layout properties.
- * This library adds the ability to draw backgrounds behind paragraphs.
- *
- * 1. Create a `PatternAnnotation` with Paragraph styles and/or backgrounds.
- * 2. Use `string.getPatternAnnotatedString()` to apply the style/s to a string.
- * 3. Use `useParagraphBackgrounds` if you want to draw paragraph backgrounds.
- * 4. Pass the annotatedString and `useParagraphBackgrounds` result to a `Text` composable.
- */
+*/
 
-// This is a much more complex pattern annotation, but it's still pretty simple!
 val codeBlockAnnotation = paragraphPatternAnnotation(
     pattern = "```[^` ][^`]*[^ ]?```",
     spanStyle = SpanStyle(
@@ -229,25 +201,7 @@ fun ParagraphStyling() {
 }
 
 /**
- * *Be careful!*
- *
- * There are a few things to keep in mind when styling paragraphs with this library:
- * 1. Overlapping paragraphs will cause a crash! Ensure that your patterns are mutually exclusive.
- * 2. Backgrounds are drawn on the main thread, so keep them simple.
- * 3. Backgrounds only appear on the second render, so keep this in mind when designing your UI.
- * 
- */
-
-
-/**
  * ## Inline content
- *
- * `buildAnnotatedString` includes the ability to replace matching text with an inline composable, but it can be cumbersome to use.
- * To achieve this dynamically, `String.getPatternAnnotatedString()` can build and return an inline content map.
- *
- * 1. Create a `PatternAnnotation` with an `inlineContent` function.
- * 2. Use `string.getPatternAnnotatedString()` to apply the style/s to a string.
- * 3. Pass the resulting `annotatedString` and `inlineContentMap` to a `Text` composable.
  */
 
 val usernameAnnotation = inlineContentPatternAnnotation(
@@ -258,6 +212,10 @@ val usernameAnnotation = inlineContentPatternAnnotation(
             Pill(usernameToNameMap[matchedText] ?: matchedText)
         }
     }
+)
+
+val usernameToNameMap = mapOf(
+    "@xavier" to "Xavier Tobin",
 )
 
 @Preview
@@ -275,16 +233,6 @@ fun SimpleInlineExample() {
         )
     }
 }
-
-/**
- * Note, as these use cases get more complex, you may want to be measure and consider performance.
- * Please
- */
-
-// Extra code for the preview
-val usernameToNameMap = mapOf(
-    "@xavier" to "Xavier Tobin",
-)
 
 @Composable
 fun Pill(text: String) {
@@ -305,10 +253,6 @@ fun Pill(text: String) {
 
 /**
  * ## Combined examples
- *
- * You can combine and customise all kinds of pattern annotations to create rich styled text.
- *
- * All you have to do is pass multiple pattern annotations to `annotatedWith` or `getPatternAnnotatedString`.
  */
 
 val italics = basicPatternAnnotation(
@@ -319,7 +263,6 @@ val italics = basicPatternAnnotation(
 @Preview
 @Composable
 fun CombinedExample() {
-
     val styledComment = "Thanks @xavier, this is _cool!_ I would like to give you an apple to say thanks :)".patternAnnotatedString(
         patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
     )

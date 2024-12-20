@@ -336,3 +336,10 @@ fun CombinedExample() {
 ###### Result:
 
 ![Combined example](images/mixed_example.png)
+
+
+# More to come
+
+- Performance notes
+- API documentation
+- Tips and tricks

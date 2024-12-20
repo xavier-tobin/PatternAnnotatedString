@@ -40,8 +40,6 @@ fun BasicExample() {
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
 
-
-
 ## Search text highlighting (& other dynamic patterns)
 
 There are use-cases for pattern-based styling where you may not know the pattern at compile-time.
@@ -60,7 +58,6 @@ fun SearchTextHighlighting() {
 
     var searchQuery by remember { mutableStateOf("") }
 
-    // Remember the pattern annotation with the search query as a key to avoid rebuilding it on every recomposition
     val highlightAnnotation = remember(searchQuery) {
         basicPatternAnnotation(
             pattern = searchQuery,
@@ -72,7 +69,6 @@ fun SearchTextHighlighting() {
 
     val highlightedText = textToHighlight.annotatedWith(
         patternAnnotation = highlightAnnotation,
-        // This means that annotations will be calculated after initial composition in a background thread
         performanceStrategy = PerformanceStrategy.Performant
     )
 
@@ -86,8 +82,15 @@ fun SearchTextHighlighting() {
         text = highlightedText,
         modifier = Modifier.padding(top = 10.dp)
     )
-    
-}
 
+}
 ```
+
+> [!NOTE]
+> Note the two methods to avoid slow re-compositions when using dynamic patterns:
+> 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
+     pattern from having to be instantiated and rebuilt on every recomposition.
+> 2. Use the `PerformanceStrategy.Performant` option when calling `annotatedWith`. This will
+     mean that text is styled in a background thread, and lead to a *slight* delay in the styles being visible.
+
 

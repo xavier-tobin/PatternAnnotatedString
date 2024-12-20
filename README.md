@@ -2,8 +2,8 @@
 
 Easily and dynamically style text using patterns/regular expressions in Jetpack Compose.
 
-Built to render markdown previews and for highlighting global search results
-in [Bundled Notes](https://bundlednotes.com).
+_Built to render markdown previews and for highlighting global search results
+in [Bundled Notes](https://bundlednotes.com)._
 
 - [x] 📝 Alternative to `buildAnnotatedString` for dynamic text
 - [x] 🎨 Simple, highly flexible Composeable API

@@ -3,7 +3,7 @@
 Easily and dynamically style text using patterns/regular expressions in Jetpack Compose.
 
 - [x] 📝 Alternative to `buildAnnotatedString` for dynamic text
-- [x] 🎨 Simple, highly flexible Composeable API
+- [x] 🎨 Simple, highly flexible Composable API
 - [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
@@ -162,7 +162,7 @@ fun SearchQueryHighlighting() {
 > Custom inline content, like rendering link previews, user pills, hashtags, etc.
 
 Compose includes support for inline text content in `buildAnnotatedString` and the `Text`
-Composeable, but it can be cumbersome to use - and very difficult with dynamic text.
+Composable, but it can be cumbersome to use - and very difficult with dynamic text.
 
 `String.patternAnnotatedString()` can easily build and return an
 `inlineContentMap` that the `Text()` composable can use:

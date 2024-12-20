@@ -21,7 +21,7 @@ just a few lines of code. All you have to do is:
     )
     ```
 
-2. Use `string.annotatedWith(patternAnnotation/s)` to get an AnnotatedString:
+2. Use `String.annotatedWith(patternAnnotation/s)` to get an AnnotatedString:
     ```kotlin
     val annotatedString = "I love _italic_ text!".annotatedWith(italicsMarkdown)
     ```
@@ -48,7 +48,7 @@ content.
     // You can also use paragraphPatternAnnotation() for custom paragraph styles
     ```
 
-2. Use `string.patternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
+2. Use `String.patternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
     ```kotlin   
     val result = "Thanks @xavier, this is cool!".patternAnnotatedString(usernamePill)
     ```
@@ -61,7 +61,7 @@ content.
 
 ## Basic text styling
 
-You can use `basicPatternAnnotation` and `string.annotatedWith()` to easily add styles to text:
+You can use `basicPatternAnnotation` and `String.annotatedWith()` to easily add styles to text:
 
 ```kotlin
 val redFruit = basicPatternAnnotation(
@@ -95,7 +95,7 @@ __This is easy to achieve with this library, but there are some performance cons
 
 1. Create a `PatternAnnotation` with a dynamic pattern inside the Composable, wrapped in a`remember`
    block.
-2. Use `string.annotatedWith()` to apply the style/s to a string with the
+2. Use `String.annotatedWith()` to apply the style/s to a string with the
    `PerformanceStrategy.Performant` option.
 
 ```kotlin
@@ -141,12 +141,12 @@ fun SearchQueryHighlighting() {
 Compose includes support for inline text content in `buildAnnotatedString` and the `Text`
 Composeable, but it can be cumbersome to use - and very difficult with dynamic text.
 
-To achieve this dynamically, `String.patternAnnotatedString()` can easily build and return an
+`String.patternAnnotatedString()` can easily build and return an
 `inlineContentMap` that the `Text()` composable can use.
 
 1. Create a `PatternAnnotation` using `inlineContentPatternAnnotation` with an `inlineContent`
    function that returns `InlineTextContent`.
-2. Use `string.patternAnnotatedString()` to get a PatternAnnotatedString.
+2. Use `String.patternAnnotatedString()` to get a PatternAnnotatedString.
 3. Pass the `annotatedString` and `inlineContentMap` to a `Text` composable.
 
 ```kotlin
@@ -184,7 +184,7 @@ __Steps:__
 
 1. Create a `PatternAnnotation` using `paragraphPatternAnnotation()` with Paragraph styles and/or
    backgrounds.
-2. Use `string.getPatternAnnotatedString()` to get a `PatternAnnotatedString` which
+2. Use `String.getPatternAnnotatedString()` to get a `PatternAnnotatedString` which
    includes background annotations.
 3. Call `useParagraphBackgrounds` with the background annotations.
 4. Pass the `annotatedString` and `useParagraphBackgrounds` result to a `Text` composable, using the

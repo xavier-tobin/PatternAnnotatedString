@@ -2,6 +2,8 @@
 
 Easily and dynamically style text using patterns/regular expressions in Jetpack Compose.
 
+Built to render markdown previews and for text highlighting in [Bundled Notes](https://bundlednotes.com).
+
 - [x] 📝 Alternative to `buildAnnotatedString` for dynamic text
 - [x] 🎨 Simple, highly flexible Composeable API
 - [x] 🚀 Respects Compose lifecycle with performance options
@@ -92,8 +94,8 @@ fun BasicExample() {
 
 ## Search text highlighting (& other dynamic patterns)
 
-There are use-cases for pattern-based styling where you may not know the pattern at compile-time.
-For example, you may want to highlight matching text based on a search query the user inputs.
+You may want to use pattern-based styling when you don't know the pattern at compile-time.
+For example, highlighting matching results based on a search query the user inputs.
 
 __This is easy to achieve with this library, but there are some performance considerations:__
 

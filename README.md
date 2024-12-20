@@ -105,7 +105,7 @@ fun BasicExample() {
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
 
-## Dynamin pattern annotations
+## Dynamic text styles
 
 > Search text highlighting, find in page etc.
 

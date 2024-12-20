@@ -51,12 +51,12 @@ just a few lines of code. All you have to do is:
 
 PatternAnnotatedString supports some features that `AnnotatedString` does not (out of the box),
 including paragraph backgrounds. It also makes it much easier to render custom inline `@Composable`
-content. To use these extra features, all you need to do is create your custom pattern annotations,
-and use `patternAnnotatedString()` instead of `annotatedWith()`, like so:
+content. To use these extra features, all you need to do is use `patternAnnotatedString()` instead
+of `annotatedWith()`:
 
 1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
     ```kotlin
-    val usernamePill = inlineContentPatternAnnotation(
+    val usernamePills = inlineContentPatternAnnotation(
         pattern = "@[A-Za-z0-9_]+",
         inlineContent = { matchedText ->
             // Return an InlineTextContent composable
@@ -67,7 +67,7 @@ and use `patternAnnotatedString()` instead of `annotatedWith()`, like so:
 
 2. Use `String.patternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
     ```kotlin   
-    val result = "Thanks @xavier, this is cool!".patternAnnotatedString(usernamePill)
+    val result = "Thanks @xavier, this is cool!".patternAnnotatedString(usernamePills)
     ```
 
 3. Use the result, which contains an `annotatedString`, `inlineContentMap` and
@@ -239,7 +239,7 @@ fun ParagraphAlignmentExample() {
 > Custom backgrounds behind paragraphs, as well as text styling and line height adjustments
 
 It is not possible to draw custom backgrounds with `ParagraphStyle` - you can only change text
-arrangement/layout properties. To fix this, `PatternAnnotatedString` includes a few helper 
+arrangement/layout properties. To fix this, `PatternAnnotatedString` includes a few helper
 functions and APIs that make paragraph backgrounds easy to implement.
 
 __Paragraph background styling steps:__
@@ -336,7 +336,6 @@ fun CombinedExample() {
 ###### Result:
 
 ![Combined example](images/mixed_example.png)
-
 
 # More to come
 

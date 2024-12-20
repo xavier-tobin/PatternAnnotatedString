@@ -198,7 +198,7 @@ fun SimpleInlineExample() {
 > [!TIP]
 > If you need to render inline content using, say, data fetched from an API, you can generate your
 > pattern annotation in the Composable, but make sure to use `remember` with a key, such as in the
-> search highlighting example to avoid rebuilding the pattern on every recomposition.
+> search highlighting example, to avoid rebuilding the pattern on every recomposition.
 
 ## Basic paragraph styling
 

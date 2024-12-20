@@ -80,8 +80,6 @@ and use `patternAnnotatedString()` instead of `annotatedWith()`, like so:
 
 > Italics, bold, font style, shadow, background etc.
 
-You can use `basicPatternAnnotation` and `String.annotatedWith()` to easily add styles to text:
-
 ```kotlin
 val redFruit = basicPatternAnnotation(
     pattern = "(\\w*berry)|(\\w{0,}apple)",
@@ -111,8 +109,8 @@ fun BasicExample() {
 
 > Search text highlighting, find in page etc.
 
-You may want to use pattern-based styling when you don't know the pattern at compile-time.
-For example, highlighting matching results based on a search query the user inputs. This is easy to
+You may want to style text based on a pattern you don't know at compile-time. For example, 
+highlighting matching text in results from a search query the user inputs. This is _easy_ to
 achieve with this library, but there are some important considerations to note:
 
 ```kotlin

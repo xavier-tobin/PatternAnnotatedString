@@ -32,7 +32,8 @@ just a few lines of code. All you have to do is:
     ```
 
 4. Enjoy the beautiful result:
-5. ![Basic italics usage example](images/basic_italics_example.png)
+
+![Basic italics usage example](images/basic_italics_example.png)
 
 # Advanced usage
 

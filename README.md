@@ -31,7 +31,7 @@ just a few lines of code. All you have to do is:
     Text(text = annotatedString)
     ```
 
-# Extra features
+# Advanced usage
 
 PatternAnnotatedString supports some features that AnnotatedString does not, including paragraph
 backgrounds. It also makes it much easier to render custom inline `@Composable` content.

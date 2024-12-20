@@ -99,7 +99,7 @@ fun BasicExample() {
 
 You may want to use pattern-based styling when you don't know the pattern at compile-time.
 For example, highlighting matching results based on a search query the user inputs. This is easy to
-achieve with this library, but there are some performance considerations to note:
+achieve with this library, but there are some important considerations to note.
 
 ```kotlin
 @Composable
@@ -110,6 +110,7 @@ fun SearchQueryHighlighting() {
     val highlightMatching = remember(searchQuery) {
         basicPatternAnnotation(
             pattern = searchQuery,
+            literalPattern = true,
             spanStyle = SpanStyle(background = Color.Yellow)
         )
     }
@@ -128,11 +129,25 @@ fun SearchQueryHighlighting() {
 }
 ```
 
+> [!CAUTION]
+> If you are building a pattern annotation based on user input, make sure to set `literalPattern` to
+> true - invalid regex will crash the app.
+
 ###### Result:
 
 ![Search result highlighting](images/search_result_highlighting.webp)
 
 > [!WARNING]
+> Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
+> 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
+     pattern from having to be instantiated and rebuilt on every recomposition.
+> 2. When immediacy is not crucial, use the `PerformanceStrategy.Performant` option when calling
+     `annotatedWith()` or `patternAnnotatedString()`. This means that text is styled in a
+     background thread and leads to a *slight* delay in the styles becoming visible.
+
+> [!WARNING]
+> The `literalPattern` parameter set to `true` because if the user types an
+> invalid regex, the app will crash.
 > Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
@@ -181,6 +196,8 @@ fun SimpleInlineExample() {
 > rebuilding the pattern on every recomposition.
 
 ## Paragraph styling
+
+If you don't need to draw custom backgrounds behind paragraphs, paragraph styling is simple:
 
 By default, `AnnotatedString` and `ParagraphStyle`s only support changing the paragraph's text
 arrangement/layout properties. `PatternAnnotatedString` includes the ability to draw custom
@@ -248,11 +265,6 @@ fun ParagraphStyling() {
 ###### Result:
 
 ![Paragraph example](images/paragraph_example.png)
-
-> [!TIP]
-> You don't have to use the `onDrawParagraphBackground` parameter. If all you need to is change the
-> Paragraph text properties, like alignment and line height, just pass the pattern and
-`paragraphStyle` to `paragraphPatternAnnotation()`
 
 > [!WARNING]
 > There are a few things to keep in mind when styling paragraphs with this library:

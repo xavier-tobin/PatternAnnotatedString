@@ -31,12 +31,18 @@ data class MatchDetails(
 
 fun basicPatternAnnotation(
     pattern: String,
+    literalPattern: Boolean = false,
     caseSensitive: Boolean = false,
     spanStyle: SpanStyle? = null,
 ): PatternAnnotation {
     return PatternAnnotation(
-        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
-        spanStyle = if (spanStyle != null) { { spanStyle } } else null,
+        pattern = Pattern.compile(
+            pattern,
+            (if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE) or (if (literalPattern) Pattern.LITERAL else 0)
+        ),
+        spanStyle = if (spanStyle != null) {
+            { spanStyle }
+        } else null,
     )
 }
 
@@ -56,12 +62,16 @@ fun paragraphPatternAnnotation(
     caseSensitive: Boolean = false,
     spanStyle: SpanStyle? = null,
     paragraphStyle: ParagraphStyle? = null,
-    onDrawParagraphBackground: OnDrawBackground,
+    onDrawParagraphBackground: OnDrawBackground? = null,
 ): PatternAnnotation {
     return PatternAnnotation(
         pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
-        spanStyle = if (spanStyle != null) { { spanStyle } } else null,
-        paragraphStyle = if (paragraphStyle != null) { { paragraphStyle } } else null,
+        spanStyle = if (spanStyle != null) {
+            { spanStyle }
+        } else null,
+        paragraphStyle = if (paragraphStyle != null) {
+            { paragraphStyle }
+        } else null,
         drawParagraphBackground = onDrawParagraphBackground
     )
 }

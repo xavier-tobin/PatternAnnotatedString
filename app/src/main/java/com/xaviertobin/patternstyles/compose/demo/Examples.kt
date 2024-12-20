@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -107,9 +108,10 @@ fun SearchTextHighlighting() {
     val highlightAnnotation = remember(searchQuery) {
         basicPatternAnnotation(
             pattern = searchQuery,
+            literalPattern = true,
             spanStyle = SpanStyle(
                 background = Color.Yellow,
-            )
+            ),
         )
     }
 
@@ -135,6 +137,33 @@ fun SearchTextHighlighting() {
 /**
  * ## Paragraph styling
 */
+
+
+val rightAlignedAnnotation = paragraphPatternAnnotation(
+    pattern = "\\(.+\\)",
+    paragraphStyle = ParagraphStyle(
+        textAlign = TextAlign.End
+    )
+)
+
+@Preview
+@Composable
+fun ParagraphAlignmentExample() {
+
+    val annotated = "I am left aligned\n(And I am right aligned)".patternAnnotatedString(
+        patternAnnotation = rightAlignedAnnotation
+    )
+
+    PreviewLayout {
+        Text(
+            text = annotated.annotatedString,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+
+}
+
+
 
 val codeBlockAnnotation = paragraphPatternAnnotation(
     pattern = "```[^` ][^`]*[^ ]?```",

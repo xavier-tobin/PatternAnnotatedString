@@ -21,7 +21,7 @@ just a few lines of code. All you have to do is:
     )
     ```
 
-2. Use `String.annotatedWith(patternAnnotation/s)` to get an AnnotatedString:
+2. Use `String.annotatedWith(patternAnnotation/s)` in a Composable to get an AnnotatedString:
     ```kotlin
     val annotatedString = "I love _italic_ text!".annotatedWith(italicsMarkdown)
     ```
@@ -30,6 +30,9 @@ just a few lines of code. All you have to do is:
     ```kotlin
     Text(text = annotatedString)
     ```
+
+4. Enjoy the beautiful result:
+5. ![Basic italics usage example](images/basic_italics_example.png)
 
 # Advanced usage
 
@@ -124,7 +127,9 @@ fun SearchQueryHighlighting() {
     Text(highlightedText)
 }
 ```
+
 ###### Result:
+
 ![Search result highlighting](images/search_result_highlighting.webp)
 
 > [!NOTE]
@@ -134,7 +139,6 @@ fun SearchQueryHighlighting() {
 > 2. Use the `PerformanceStrategy.Performant` option when calling `annotatedWith`. This will
      mean that text is styled in a background thread, and lead to a *slight* delay in the styles
      being visible.
-
 
 ## Inline content
 

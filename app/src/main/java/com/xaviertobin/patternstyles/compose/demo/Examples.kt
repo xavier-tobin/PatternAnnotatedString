@@ -43,12 +43,33 @@ import com.xaviertobin.patternstyles.paragraphPatternAnnotation
 import com.xaviertobin.patternstyles.useParagraphBackgrounds
 
 
+
 /**
- * # Basic usage
- *
- * 1. Create a `PatternAnnotation` which maps a pattern to styles.
- * 2. Use `string.annotatedWith()` to create an `AnnotatedString` with the styles applied.
+ * # Basic italics example
  */
+
+val italicsMarkdown = basicPatternAnnotation(
+    pattern = "_.*?_",
+    spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
+)
+
+@Preview
+@Composable
+fun BasicItalicsExample() {
+    PreviewLayout {
+        Text(
+            // annotatedWith accepts either one or a list of PatternAnnotations
+            // So you can apply multiple styles to the same text
+            text = "I love _italic_ text!".annotatedWith(italicsMarkdown)
+        )
+    }
+}
+
+
+
+/**
+ * # Basic styling
+*/
 
 val redFruit = basicPatternAnnotation(
     pattern = "(\\w*berry)|(\\w{0,}apple)",

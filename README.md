@@ -8,9 +8,9 @@ Easily and dynamically style text using patterns/regular expressions in Jetpack 
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
 
-# Usage
+# Basic usage
 
-The library has a very simple public API and in most cases you can add dynamic styles to text with
+The library has a very simple API and in most cases you generate a styled `AnnotatedString` with
 just a few lines of code. All you have to do is:
 
 1. Create PatternAnnotation/s that map patterns to text styles:
@@ -25,14 +25,18 @@ just a few lines of code. All you have to do is:
     ```kotlin
     val annotatedString = "I love _italic_ text!".annotatedWith(italicsMarkdown)
     ```
-3. Use the result in a Composable with `annotatedString`:
+
+3. Use the result in a Composable:
     ```kotlin
     Text(text = annotatedString)
     ```
 
-If you want to use paragraph backgrounds or inline composable content, the API is still simple:
+# Extra features
 
-1. Create PatternAnnotation/s that map patterns to text styles:
+If you want to use extra features, like paragraph backgrounds or inline composable content, the API
+is still simple:
+
+1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
     ```kotlin
     val inlineContentAnnotation = inlineContentPatternAnnotation(
         pattern = "@[A-Za-z0-9_]+",
@@ -42,22 +46,23 @@ If you want to use paragraph backgrounds or inline composable content, the API i
     )
     // You can also use paragraphPatternAnnotation for custom paragraph styles
     ```
+   
 2. Use `string.getPatternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
     ```kotlin   
     val result = "Thanks @xavier, this is cool!".patternAnnotatedString(inlineContentAnnotation)
     ```
+   
 3. Use the result, which contains an `AnnotatedString`, `inlineContentMap` and
    `paragraphBackgroundAnnotations`. See examples further below for how to use them!
 
+# Examples
 
-## Basic example
-
-For basic text styling, you can use `basicPatternAnnotation` to apply a style to a pattern match.
+For basic text styling, you can use `basicPatternAnnotation` and `string.annotatedWith()`:
 
 ```kotlin
 val redFruit = basicPatternAnnotation(
     pattern = "(\\w*berry)|(\\w{0,}apple)",
-    spanStyle = SpanStyle(color = Color.Red)
+    spanStyle = SpanStyle(color = Color.Red, fontWeight = FontWeight.Bold)
 )
 
 @Composable
@@ -68,8 +73,9 @@ fun BasicExample() {
 }
 ```
 
-*Result*
+*Result:*
 
+![Basic Example](images/basic_example.png)
 
 
 > [!NOTE]

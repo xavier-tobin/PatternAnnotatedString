@@ -11,6 +11,16 @@ Easily and dynamically style text using patterns/regular expressions in Jetpack 
 > _Built to render markdown previews and for highlighting global search results
 in [Bundled Notes](https://bundlednotes.com)._
 
+## Readiness checklist
+
+This library has been an internal experiment for about a month, but I plan to release it as a
+maintained library after I've done the following:
+
+- [] Wait til compose-bom includes latest StringAnnotation APIs
+- [] Add more examples to README
+- [] Add tests
+- [] Work out how to release library via Maven/Gradle
+
 # Basic usage
 
 The library has a very simple API and in most cases you can generate a styled `AnnotatedString` with
@@ -68,6 +78,8 @@ and use `patternAnnotatedString()` instead of `annotatedWith()`, like so:
 
 ## Basic text styling
 
+> Italics, bold, font style, shadow, background etc.
+
 You can use `basicPatternAnnotation` and `String.annotatedWith()` to easily add styles to text:
 
 ```kotlin
@@ -95,7 +107,9 @@ fun BasicExample() {
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
 
-## Search text highlighting (& other dynamic patterns)
+## Dynamin pattern annotations
+
+> Search text highlighting, find in page etc.
 
 You may want to use pattern-based styling when you don't know the pattern at compile-time.
 For example, highlighting matching results based on a search query the user inputs. This is easy to
@@ -147,6 +161,8 @@ fun SearchQueryHighlighting() {
 
 ## Inline content
 
+> Custom inline content, like rendering link previews, user pills, hashtags, etc.
+
 Compose includes support for inline text content in `buildAnnotatedString` and the `Text`
 Composeable, but it can be cumbersome to use - and very difficult with dynamic text.
 
@@ -186,9 +202,12 @@ fun SimpleInlineExample() {
 > pattern annotation in the Composable, but make sure to use `remember` with a key, such as in the
 > search highlighting example to avoid rebuilding the pattern on every recomposition.
 
-## Paragraph styling
+## Basic paragraph styling
 
-If you don't need to draw custom backgrounds behind paragraphs, paragraph styling is simple. You can customise paragraph styles and easily align text, change line spacing, etc.
+> Control text layout, line height, alignment
+
+If you don't need to draw custom backgrounds behind paragraphs, paragraph styling is simple. You can
+customise paragraph styles and easily align text, change line spacing, etc.
 
 ```kotlin
 val rightAlignedBrackets = paragraphPatternAnnotation(
@@ -217,10 +236,14 @@ fun ParagraphAlignmentExample() {
 
 ![Paragraph example](images/paragraph_alignment_example.png)
 
+## Advanced paragraph styling with backgrounds
+
+> Custom backgrounds behind paragraphs, as well as text styling and line height adjustments
+
 It is not possible to draw custom backgrounds with `ParagraphStyle` - you can only change text
-arrangement/layout properties. To support custom backgrounds, `PatternAnnotatedString` includes a few helper
-functions to make it easy to draw custom backgrounds behind paragraphs which be used, for example,
-to render basic code or quote blocks.
+arrangement/layout properties. To support custom backgrounds, `PatternAnnotatedString` includes a
+few helper functions to make it easy to draw custom backgrounds behind paragraphs which be used, for
+example, to render basic code or quote blocks.
 
 __Paragraph background styling steps:__
 
@@ -300,17 +323,19 @@ This makes it easy to create rich, custom text styles:
 ```kotlin
 @Composable
 fun CombinedExample() {
-    val styledComment =
-        "Thanks @xavier, this is _cool!_ I would like to give you an apple to say thanks :)".patternAnnotatedString(
-            patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
-        )
 
-    PreviewLayout {
-        Text(
-            text = styledComment.annotatedString,
-            inlineContent = styledComment.inlineContentMap
-        )
-    }
+    val userComment = "Thanks @xavier, this is cool!" +
+            "I love _italics_ and would like to give you an apple to say thanks :)"
+
+    val styledComment = userComment.patternAnnotatedString(
+        patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
+    )
+
+    Text(
+        text = styledComment.annotatedString,
+        inlineContent = styledComment.inlineContentMap
+    )
+
 }
 ```
 

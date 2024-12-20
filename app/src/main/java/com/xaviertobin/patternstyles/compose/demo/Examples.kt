@@ -44,7 +44,6 @@ import com.xaviertobin.patternstyles.paragraphPatternAnnotation
 import com.xaviertobin.patternstyles.useParagraphBackgrounds
 
 
-
 /**
  * # Basic italics example
  */
@@ -68,7 +67,7 @@ fun BasicItalicsExample() {
 
 /**
  * # Basic styling
-*/
+ */
 
 val redFruit = basicPatternAnnotation(
     pattern = "(\\w*berry)|(\\w{0,}apple)",
@@ -136,7 +135,7 @@ fun SearchTextHighlighting() {
 
 /**
  * ## Paragraph styling
-*/
+ */
 
 
 val rightAlignedAnnotation = paragraphPatternAnnotation(
@@ -162,7 +161,6 @@ fun ParagraphAlignmentExample() {
     }
 
 }
-
 
 
 val codeBlockAnnotation = paragraphPatternAnnotation(
@@ -292,7 +290,11 @@ val italics = basicPatternAnnotation(
 @Preview
 @Composable
 fun CombinedExample() {
-    val styledComment = "Thanks @xavier, this is _cool!_ I would like to give you an apple to say thanks :)".patternAnnotatedString(
+
+    val userComment = "Thanks @xavier, this is cool!" +
+            " I also love _italics_ and would like to give you an apple to say thanks :)"
+
+    val styledComment = userComment.patternAnnotatedString(
         patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
     )
 
@@ -323,7 +325,6 @@ fun PreviewLayout(
     }
 
 }
-
 
 
 //val quoteBlockStyle = paragraphPatternAnnotation(

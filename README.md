@@ -16,10 +16,10 @@ in [Bundled Notes](https://bundlednotes.com)._
 This library has been an internal experiment for about a month, but I plan to release it as a
 maintained library after I've done the following:
 
-- [] Wait til compose-bom includes latest StringAnnotation APIs
-- [] Add more examples to README
-- [] Add tests
-- [] Work out how to release library via Maven/Gradle
+- [ ] Wait til compose-bom includes latest StringAnnotation APIs
+- [ ] Add more examples to README
+- [ ] Add tests
+- [ ] Work out how to release library via Maven/Gradle
 
 # Basic usage
 

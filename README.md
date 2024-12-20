@@ -18,13 +18,16 @@ just a few lines of code. All you have to do is:
     val italicsMarkdown = basicPatternAnnotation(
         pattern = "_.*?_",
         spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
-        // You can also use paragraphStyle for paragraph annotations
     )
     ```
 
 2. Use `string.annotatedWith(patternAnnotation/s)` to get an AnnotatedString:
     ```kotlin
-    "I love _italic_ text!".annotatedWith(italicsMarkdown)
+    val annotatedString = "I love _italic_ text!".annotatedWith(italicsMarkdown)
+    ```
+3. Use the result in a Composable with `annotatedString`:
+    ```kotlin
+    Text(text = annotatedString)
     ```
 
 If you want to use paragraph backgrounds or inline composable content, the API is still simple:

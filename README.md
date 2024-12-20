@@ -41,8 +41,8 @@ just a few lines of code. All you have to do is:
 
 PatternAnnotatedString supports some features that `AnnotatedString` does not (out of the box),
 including paragraph backgrounds. It also makes it much easier to render custom inline `@Composable`
-content. To use these extra, all you need to do is create your custom pattern annotations, and use
-`patternAnnotatedString()` instead of `annotatedWith()`, like so:
+content. To use these extra features, all you need to do is create your custom pattern annotations,
+and use `patternAnnotatedString()` instead of `annotatedWith()`, like so:
 
 1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
     ```kotlin
@@ -84,10 +84,12 @@ fun BasicExample() {
 }
 ```
 
+###### Result:
+
 ![Basic Example](images/basic_example.png)
 
 
-> [!NOTE]
+> [!IMPORTANT]
 > `annotatedWith` is a Composable function and only re-calculates styles if the text or
 > annotations/s change.
 > Many annotations, long text or complex patterns may impact performance, but the library includes
@@ -98,12 +100,7 @@ fun BasicExample() {
 You may want to use pattern-based styling when you don't know the pattern at compile-time.
 For example, highlighting matching results based on a search query the user inputs.
 
-__This is easy to achieve with this library, but there are some performance considerations:__
-
-1. Create a `PatternAnnotation` with a dynamic pattern inside the Composable, wrapped in a`remember`
-   block.
-2. Use `String.annotatedWith()` to apply the style/s to a string with the
-   `PerformanceStrategy.Performant` option.
+This is easy to achieve with this library, but there are some performance considerations:
 
 ```kotlin
 @Composable
@@ -136,7 +133,7 @@ fun SearchQueryHighlighting() {
 
 ![Search result highlighting](images/search_result_highlighting.webp)
 
-> [!NOTE]
+> [!WARNING]
 > Note the two simple methods to avoid too many or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
@@ -150,18 +147,13 @@ Compose includes support for inline text content in `buildAnnotatedString` and t
 Composeable, but it can be cumbersome to use - and very difficult with dynamic text.
 
 `String.patternAnnotatedString()` can easily build and return an
-`inlineContentMap` that the `Text()` composable can use.
-
-1. Create a `PatternAnnotation` using `inlineContentPatternAnnotation` with an `inlineContent`
-   function that returns `InlineTextContent`.
-2. Use `String.patternAnnotatedString()` to get a PatternAnnotatedString.
-3. Pass the `annotatedString` and `inlineContentMap` to a `Text` composable.
+`inlineContentMap` that the `Text()` composable can use:
 
 ```kotlin
 val usernameAnnotation = inlineContentPatternAnnotation(
     pattern = "@[A-Za-z0-9_]+",
     inlineContent = { matchedText ->
-        inlineContent(width = 7.3.em, height = 1.8.em) {
+        inlineTextContent(width = 7.3.em, height = 1.8.em) {
             // You can use any composable here, but make sure it fits within the above bounds^
             Pill(usernameToNameMap[matchedText] ?: matchedText)
         }
@@ -179,6 +171,8 @@ fun SimpleInlineExample() {
     )
 }
 ```
+
+###### Result:
 
 ![Inline content example](images/inline_example.png)
 
@@ -247,4 +241,11 @@ fun ParagraphStyling() {
 
 ```
 
+###### Result:
+
 ![Paragraph example](images/paragraph_example.png)
+
+> [!TIP]
+> You don't have to use the `onDrawParagraphBackground` parameter. If all you need to is change the
+> Paragraph text properties, like alignment and line height, just pass the pattern and
+`paragraphStyle` to `paragraphPatternAnnotation()`

@@ -37,7 +37,7 @@ import com.xaviertobin.patternstyles.basicPatternAnnotation
 import com.xaviertobin.patternstyles.annotatedWith
 import com.xaviertobin.patternstyles.drawParagraphBackgrounds
 import com.xaviertobin.patternstyles.patternAnnotatedString
-import com.xaviertobin.patternstyles.inlineContent
+import com.xaviertobin.patternstyles.inlineTextContent
 import com.xaviertobin.patternstyles.inlineContentPatternAnnotation
 import com.xaviertobin.patternstyles.paragraphPatternAnnotation
 import com.xaviertobin.patternstyles.useParagraphBackgrounds
@@ -253,7 +253,7 @@ fun ParagraphStyling() {
 val usernameAnnotation = inlineContentPatternAnnotation(
     pattern = "@[A-Za-z0-9_]+",
     inlineContent = { matchedText ->
-        inlineContent(width = 7.3.em, height = 1.8.em) {
+        inlineTextContent(width = 7.3.em, height = 1.8.em) {
             // You can use any composable here, but stick within the above bounds^
             Pill(usernameToNameMap[matchedText] ?: matchedText)
         }

@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 
 
-fun inlineContent(
+fun inlineTextContent(
     width: TextUnit = 1.em,
     height: TextUnit = 1.em,
     placeholderVerticalAlign: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Center,

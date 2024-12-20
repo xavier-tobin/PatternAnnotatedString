@@ -99,7 +99,7 @@ fun BasicExample() {
 
 You may want to use pattern-based styling when you don't know the pattern at compile-time.
 For example, highlighting matching results based on a search query the user inputs. This is easy to
-achieve with this library, but there are some important considerations to note.
+achieve with this library, but there are some important considerations to note:
 
 ```kotlin
 @Composable
@@ -129,25 +129,15 @@ fun SearchQueryHighlighting() {
 }
 ```
 
-> [!CAUTION]
-> If you are building a pattern annotation based on user input, make sure to set `literalPattern` to
-> true - invalid regex will crash the app.
-
 ###### Result:
 
 ![Search result highlighting](images/search_result_highlighting.webp)
 
-> [!WARNING]
-> Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
-> 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
-     pattern from having to be instantiated and rebuilt on every recomposition.
-> 2. When immediacy is not crucial, use the `PerformanceStrategy.Performant` option when calling
-     `annotatedWith()` or `patternAnnotatedString()`. This means that text is styled in a
-     background thread and leads to a *slight* delay in the styles becoming visible.
+> [!CAUTION]
+> If you are building a pattern annotation based on user input, make sure to set `literalPattern` to
+> true - invalid regex will crash the app.
 
 > [!WARNING]
-> The `literalPattern` parameter set to `true` because if the user types an
-> invalid regex, the app will crash.
 > Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
@@ -168,7 +158,7 @@ val usernameAnnotation = inlineContentPatternAnnotation(
     pattern = "@[A-Za-z0-9_]+",
     inlineContent = { matchedText ->
         inlineTextContent(width = 7.3.em, height = 1.8.em) {
-            // You can use any composable here, but make sure it fits within the above bounds^
+            // You can use any composable here, but make sure it fits within the bounds you choose^
             UsernamePill(matchedText)
         }
     }
@@ -177,7 +167,8 @@ val usernameAnnotation = inlineContentPatternAnnotation(
 @Composable
 fun SimpleInlineExample() {
 
-    val styledComment = "Thanks @xavier, this is cool!".patternAnnotatedString(usernameAnnotation)
+    val styledComment = "Thanks @xavier, this is cool!"
+        .patternAnnotatedString(usernameAnnotation)
 
     Text(
         text = styledComment.annotatedString,
@@ -192,16 +183,44 @@ fun SimpleInlineExample() {
 
 > [!TIP]
 > If you need to render inline content using, say, data fetched from an API, you can generate your
-> pattern annotation in the Composable, but make sure to use `remember(key1 = isDataReady)` to avoid
-> rebuilding the pattern on every recomposition.
+> pattern annotation in the Composable, but make sure to use `remember` with a key, such as in the
+> search highlighting example to avoid rebuilding the pattern on every recomposition.
 
 ## Paragraph styling
 
-If you don't need to draw custom backgrounds behind paragraphs, paragraph styling is simple:
+If you don't need to draw custom backgrounds behind paragraphs, paragraph styling is simple. You can customise paragraph styles and easily align text, change line spacing, etc.
 
-By default, `AnnotatedString` and `ParagraphStyle`s only support changing the paragraph's text
-arrangement/layout properties. `PatternAnnotatedString` includes the ability to draw custom
-backgrounds behind paragraphs which be used, for example, to render basic code or quote blocks.
+```kotlin
+val rightAlignedBrackets = paragraphPatternAnnotation(
+    pattern = "\\(.+\\)",
+    paragraphStyle = ParagraphStyle(
+        textAlign = TextAlign.End
+    ),
+    // You can also use SpanStyle here! Paragraph and Span styles can be combined.
+    // spanStyle = SpanStyle(fontWeight = FontWeight.Bold)
+)
+
+@Composable
+fun ParagraphAlignmentExample() {
+    val annotated = "I am left aligned\n(And I am right aligned)".patternAnnotatedString(
+        patternAnnotation = rightAlignedBrackets
+    )
+
+    Text(
+        text = annotated.annotatedString,
+        modifier = Modifier.fillMaxWidth(),
+    )
+}
+```
+
+###### Result:
+
+![Paragraph example](images/paragraph_alignment_example.png)
+
+It is not possible to draw custom backgrounds with `ParagraphStyle` - you can only change text
+arrangement/layout properties. To support custom backgrounds, `PatternAnnotatedString` includes a few helper
+functions to make it easy to draw custom backgrounds behind paragraphs which be used, for example,
+to render basic code or quote blocks.
 
 __Paragraph background styling steps:__
 
@@ -214,8 +233,6 @@ __Paragraph background styling steps:__
    `drawParagraphBackgrounds` modifier and the `onTextLayout` parameter.
 
 ```kotlin
-// This is a more complex pattern annotation, but it's still pretty simple.
-// A codeblock paragraph pattern, monospace font and a light grey background.
 val codeBlockAnnotation = paragraphPatternAnnotation(
     pattern = "```[^` ][^`]*[^ ]?```",
     spanStyle = SpanStyle(fontFamily = FontFamily.Monospace),

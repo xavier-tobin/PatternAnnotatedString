@@ -11,14 +11,12 @@ Easily and dynamically style text using patterns/regular expressions in Jetpack 
 # Usage
 
 The library has a very simple public API and in most cases you can add dynamic styles to text with
-just a few lines of code.
+just a few lines of code. All you have to do is:
 
-Broadly speaking, the API is:
-
-1. Create PatternAnnotation/s.
-2. Use `string.annotatedWith(patternAnnotation/s)` if all you need is an `AnnotatedString`, or use
-   `string.patternAnnotatedString(patternAnnotation/s)` if you want to use paragraph backgrounds or
-   inline composable content.
+1. Create PatternAnnotation/s that map patterns to text styles.
+2. Use `string.annotatedWith(patternAnnotation/s)` if all you need is an `AnnotatedString`.
+3. Or: use `string.patternAnnotatedString(patternAnnotation/s)` if you want to use paragraph
+   backgrounds or inline composable content.
 
 ## Basic example
 
@@ -92,8 +90,6 @@ fun SearchQueryHighlighting() {
 > 2. Use the `PerformanceStrategy.Performant` option when calling `annotatedWith`. This will
      mean that text is styled in a background thread, and lead to a *slight* delay in the styles
      being visible.
-
-
 
 ## Inline content
 

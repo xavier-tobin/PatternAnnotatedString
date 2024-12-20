@@ -2,7 +2,7 @@
 
 Easily and dynamically style text using patterns/regular expressions in Jetpack Compose.
 
-- [x] 📝 Alternative to `buildAnnotatedString` for dynamic text
+- [x] 📝 Alternative to `buildAnnotatedString` for dynamic text styling
 - [x] 🎨 Simple, highly flexible Composable API
 - [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds

@@ -60,6 +60,7 @@ content.
 # Examples
 
 ## Basic text styling
+
 You can use `basicPatternAnnotation` and `string.annotatedWith()` to easily add styles to text:
 
 ```kotlin
@@ -76,13 +77,14 @@ fun BasicExample() {
 }
 ```
 
+![Basic Example](images/basic_example.png)
+
+
 > [!NOTE]
 > `annotatedWith` is a Composable function and only re-calculates styles if the text or
 > annotations/s change.
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
-
-![Basic Example](images/basic_example.png)
 
 ## Search text highlighting (& other dynamic patterns)
 
@@ -122,6 +124,8 @@ fun SearchQueryHighlighting() {
     Text(highlightedText)
 }
 ```
+####### Result:
+![Search result highlighting](images/search_result_highlighting.webp)
 
 > [!NOTE]
 > Note the two simple methods to avoid too many or slow re-compositions when using dynamic patterns:
@@ -131,7 +135,6 @@ fun SearchQueryHighlighting() {
      mean that text is styled in a background thread, and lead to a *slight* delay in the styles
      being visible.
 
-![Search result highlighting](images/search_result_highlighting.webp)
 
 ## Inline content
 
@@ -139,18 +142,19 @@ Compose includes support for inline text content in `buildAnnotatedString` and t
 Composeable, but it can be cumbersome to use - and very difficult with dynamic text.
 
 To achieve this dynamically, `String.patternAnnotatedString()` can easily build and return an
-inline content map.
+`inlineContentMap` that the `Text()` composable can use.
 
-1. Create a `PatternAnnotation` with an `inlineContent` function that returns `InlineTextContent`.
-2. Use `string.getPatternAnnotatedString()` to apply the style/s to a string.
-3. Pass the resulting `annotatedString` and `inlineContentMap` to a `Text` composable.
+1. Create a `PatternAnnotation` using `inlineContentPatternAnnotation` with an `inlineContent`
+   function that returns `InlineTextContent`.
+2. Use `string.patternAnnotatedString()` to get a PatternAnnotatedString.
+3. Pass the `annotatedString` and `inlineContentMap` to a `Text` composable.
 
 ```kotlin
 val usernameAnnotation = inlineContentPatternAnnotation(
     pattern = "@[A-Za-z0-9_]+",
     inlineContent = { matchedText ->
         inlineContent(width = 7.3.em, height = 1.8.em) {
-            // You can use any composable here, but stick within the above bounds^
+            // You can use any composable here, but make sure it fits within the above bounds^
             Pill(usernameToNameMap[matchedText] ?: matchedText)
         }
     }
@@ -168,26 +172,27 @@ fun SimpleInlineExample() {
 }
 ```
 
-__Result:__
+![Inline content example](images/inline_example.png)
 
 ## Paragraph styling
 
-By default, AnnotatedString + ParagraphStyles only support changing text arrangement/layout
-properties for paragraphs. This library adds the ability to draw custom backgrounds behind
-paragraphs which can render be used, for example, to render basic code or quote blocks.
+By default, `AnnotatedString` and `ParagraphStyle`s only support changing the paragraph's text
+arrangement/layout properties. `PatternAnnotatedString` includes the ability to draw custom
+backgrounds behind paragraphs which be used, for example, to render basic code or quote blocks.
 
 __Steps:__
 
 1. Create a `PatternAnnotation` using `paragraphPatternAnnotation()` with Paragraph styles and/or
    backgrounds.
-2. Use `string.getPatternAnnotatedString()` to apply the style/s to a string. Unlike `annotatedWith`
-   which only returns an `AnnotatedString`, this function returns a `PatternAnnotatedString` which
-   includes annotations for backgrounds & inline content.
-3. Use `useParagraphBackgrounds` if you want to draw paragraph backgrounds.
-4. Pass the annotatedString and `useParagraphBackgrounds` result to a `Text` composable.
+2. Use `string.getPatternAnnotatedString()` to get a `PatternAnnotatedString` which
+   includes background annotations.
+3. Call `useParagraphBackgrounds` with the background annotations.
+4. Pass the `annotatedString` and `useParagraphBackgrounds` result to a `Text` composable, using the
+   `drawParagraphBackgrounds` modifier and the `onTextLayout` parameter.
 
 ```kotlin
-// This is a more complex pattern annotation, but it's still pretty simple!
+// This is a more complex pattern annotation, but it's still pretty simple.
+// A codeblock paragraph pattern, monospace font and a light grey background.
 val codeBlockAnnotation = paragraphPatternAnnotation(
     pattern = "```[^` ][^`]*[^ ]?```",
     spanStyle = SpanStyle(fontFamily = FontFamily.Monospace),
@@ -233,3 +238,5 @@ fun ParagraphStyling() {
 }
 
 ```
+
+![Paragraph example](images/paragraph_example.png)

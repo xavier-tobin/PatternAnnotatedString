@@ -1,10 +1,12 @@
-# PatternStyles for Jetpack Compose
+# PatternAnnotatedString
 
-Easily style text using pattern/regular expressions in Jetpack Compose.
+Easily and dynamically style text using pattern/regular expressions in Jetpack Compose.
 
-The library includes support for the features you might use in `buildAnnotatedString` with
-`SpanStyle` and `ParagraphStyle`, while also including out-of-the-box support for custom paragraph
-backgrounds and an easy way to manage inline Composable content, like username handles.
+- [x] 📝 Alternative to `buildAnnotatedString` for dynamic text
+- [x] 🧩 Supports inline styles
+- [x] 🎨 Highly flexible, simple Compose-ready API
+- [x] 🚀 Respects compose lifecycle with performance options
+- [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 
 # Usage
 
@@ -22,15 +24,17 @@ val redFruit = basicPatternAnnotation(
 @Preview
 @Composable
 fun BasicExample() {
-    PreviewLayout {
-        Text(
-            // annotatedWith accepts either one or a list of PatternAnnotations
-            // So you can apply multiple styles to the same text
-            text = "Strawberry Fridge Apple Ferrari".annotatedWith(redFruit)
-        )
-    }
+    Text(
+        // annotatedWith accepts either one or a list of PatternAnnotations
+        // So you can apply multiple styles to the same text
+        text = "Strawberry Fridge Apple Ferrari".annotatedWith(redFruit)
+    )
 }
 ```
+
+*Result*
+
+
 
 > [!NOTE]
 > `annotatedWith` is a Composable function and only re-calculates styles if the text or
@@ -38,5 +42,52 @@ fun BasicExample() {
 > Many styles, long text or complicated patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
 
+## Search text highlighting (& other dynamic patterns)
 
+There are use-cases for pattern-based styling where you may not know the pattern at compile-time.
+For example, you may want to highlight matching text based on a search query the user inputs.
+
+This is easy to achieve with this library, but there are some performance considerations.
+
+1. Create a `PatternAnnotation` with a dynamic pattern, wrapped in a `remember` block.
+2. Use `string.annotatedWith()` to apply the style/s to a string with the
+   `PerformanceStrategy.Performant` option.
+
+```kotlin
+@Preview
+@Composable
+fun SearchTextHighlighting() {
+
+    var searchQuery by remember { mutableStateOf("") }
+
+    // For performance reasons, you should remember the pattern annotation with the search query as a key
+    val highlightAnnotation = remember(searchQuery) {
+        basicPatternAnnotation(
+            pattern = searchQuery,
+            spanStyle = SpanStyle(
+                background = Color.Yellow,
+            )
+        )
+    }
+
+    val highlightedText = textToHighlight.annotatedWith(
+        patternAnnotation = highlightAnnotation,
+        // This means that annotations will be calculated after initial composition in a background thread
+        performanceStrategy = PerformanceStrategy.Performant
+    )
+
+
+    TextField(
+        value = searchQuery,
+        onValueChange = { searchQuery = it }
+    )
+
+    Text(
+        text = highlightedText,
+        modifier = Modifier.padding(top = 10.dp)
+    )
+    
+}
+
+```
 

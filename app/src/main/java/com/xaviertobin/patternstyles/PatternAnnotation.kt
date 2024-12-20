@@ -1,7 +1,6 @@
 package com.xaviertobin.patternstyles
 
 import androidx.compose.foundation.text.InlineTextContent
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ParagraphStyle
@@ -35,12 +34,36 @@ fun basicPatternAnnotation(
     caseSensitive: Boolean = false,
     spanStyle: SpanStyle? = null,
     paragraphStyle: ParagraphStyle? = null,
-    inlineContentTag: String? = null,
 ): PatternAnnotation {
     return PatternAnnotation(
         pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
         spanStyle = if (spanStyle != null) { { spanStyle } } else null,
         paragraphStyle = if (paragraphStyle != null) { { paragraphStyle } } else null,
-        inlineContentTag = inlineContentTag
+    )
+}
+
+fun inlineContentPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    inlineContent: InlineContentFunction,
+): PatternAnnotation {
+    return PatternAnnotation(
+        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
+        inlineContent = inlineContent
+    )
+}
+
+fun paragraphPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = null,
+    paragraphStyle: ParagraphStyle? = null,
+    onDrawParagraphBackground: OnDrawBackground,
+): PatternAnnotation {
+    return PatternAnnotation(
+        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
+        spanStyle = if (spanStyle != null) { { spanStyle } } else null,
+        paragraphStyle = if (paragraphStyle != null) { { paragraphStyle } } else null,
+        drawParagraphBackground = onDrawParagraphBackground
     )
 }

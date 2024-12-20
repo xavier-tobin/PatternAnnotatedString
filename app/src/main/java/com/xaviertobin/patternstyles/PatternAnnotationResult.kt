@@ -5,25 +5,27 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.StringAnnotation
 
 
-/**
- * Describes a plan to build an AnnotatedString, constructed by running the PatternAnnotations on a given text.
- */
-data class PatternAnnotationResult(
-    val rangedAnnotations: List<AnnotatedString.Range<out AnnotatedString.Annotation>> = listOf(),
-    val paragraphBackgroundAnnotations: List<ParagraphBackgroundAnnotation> = listOf(),
-    val discoveredInlineContent: List<DiscoveredInlineContent> = listOf(),
-    val inlineContentMap: Map<String, InlineTextContent> = mapOf()
+data class ParagraphBackgroundAnnotation(
+    val start: Int,
+    val end: Int,
+    val onDraw: OnDrawBackground
 )
 
-data class ParagraphBackgroundAnnotation(val start: Int, val end: Int, val onDraw: OnDrawBackground)
+data class DiscoveredInlineContent(
+    val contentId: String,
+    val patternTag: String
+)
 
-data class DiscoveredInlineContent(val contentId: String, val patternTag: String)
+enum class PerformanceStrategy {
+    Performant,
+    Immediate,
+}
 
 
 /**
  * Uses a list of pattern annotations to generate an AnnotationSpan
  */
-internal fun List<PatternAnnotation>.getPatternAnnotationResult(text: String): PatternAnnotationResult {
+internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: String): PatternAnnotatedString {
     val allAnnotations = mutableListOf<AnnotatedString.Range<out AnnotatedString.Annotation>>()
     val backgrounds = mutableListOf<ParagraphBackgroundAnnotation>()
     val discoveredInlineContent = mutableListOf<DiscoveredInlineContent>()
@@ -90,15 +92,13 @@ internal fun List<PatternAnnotation>.getPatternAnnotationResult(text: String): P
         }
     }
 
-    return PatternAnnotationResult(
-        rangedAnnotations = allAnnotations,
+    return PatternAnnotatedString(
+        annotatedString = AnnotatedString(text, allAnnotations),
+        styled = true,
         paragraphBackgroundAnnotations = backgrounds,
         discoveredInlineContent = discoveredInlineContent,
         inlineContentMap = inlineContentMap
     )
 }
-
-
-
 
 

@@ -8,7 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.TextLayoutResult
 
 
@@ -69,17 +68,11 @@ fun getParagraphBounds(
     startLine: Int,
     endLine: Int,
 ): Rect {
-
-    val startOffsetX = textLayoutResult.getLineLeft(startLine)
-    val startOffsetY = textLayoutResult.getLineTop(startLine)
-    val endOffsetX = textLayoutResult.getLineRight(endLine)
-    val endOffsetY = textLayoutResult.getLineBottom(endLine)
-
     return Rect(
-        left = startOffsetX,
-        top = startOffsetY,
-        right = endOffsetX,
-        bottom = endOffsetY
+        left = 0f,
+        top = textLayoutResult.getLineTop(startLine),
+        right =  textLayoutResult.getLineRight(endLine),
+        bottom = textLayoutResult.getLineBottom(endLine)
     )
 }
 

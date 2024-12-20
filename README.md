@@ -39,7 +39,7 @@ content.
 
 1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
     ```kotlin
-    val inlineContentAnnotation = inlineContentPatternAnnotation(
+    val usernamePill = inlineContentPatternAnnotation(
         pattern = "@[A-Za-z0-9_]+",
         inlineContent = { matchedText ->
             // Return an InlineTextContent composable
@@ -50,7 +50,7 @@ content.
 
 2. Use `string.patternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
     ```kotlin   
-    val result = "Thanks @xavier, this is cool!".patternAnnotatedString(inlineContentAnnotation)
+    val result = "Thanks @xavier, this is cool!".patternAnnotatedString(usernamePill)
     ```
 
 3. Use the result, which contains an `annotatedString`, `inlineContentMap` and
@@ -81,7 +81,6 @@ fun BasicExample() {
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
 
-*Result:*
 ![Basic Example](images/basic_example.png)
 
 ## Search text highlighting (& other dynamic patterns)
@@ -131,7 +130,6 @@ fun SearchQueryHighlighting() {
      mean that text is styled in a background thread, and lead to a *slight* delay in the styles
      being visible.
 
-*Result:*
 ![Search result highlighting](images/search_result_highlighting.webp)
 
 ## Inline content

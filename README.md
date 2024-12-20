@@ -10,7 +10,7 @@ Easily and dynamically style text using patterns/regular expressions in Jetpack 
 
 # Basic usage
 
-The library has a very simple API and in most cases you generate a styled `AnnotatedString` with
+The library has a very simple API and in most cases you can generate a styled `AnnotatedString` with
 just a few lines of code. All you have to do is:
 
 1. Create PatternAnnotation/s that map patterns to text styles:
@@ -120,6 +120,7 @@ fun SearchQueryHighlighting() {
     Text(highlightedText)
 }
 ```
+
 > [!NOTE]
 > Note the two simple methods to avoid too many or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
@@ -130,7 +131,6 @@ fun SearchQueryHighlighting() {
 
 *Result:*
 ![Search result highlighting](images/search_result_highlighting.webp)
-
 
 ## Inline content
 

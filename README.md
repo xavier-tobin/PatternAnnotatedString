@@ -288,15 +288,13 @@ fun ParagraphStyling() {
         paragraphBackgroundAnnotations = annotated.paragraphBackgroundAnnotations
     )
 
-    PreviewLayout {
-        Text(
-            text = annotated.annotatedString,
-            onTextLayout = backgroundsResult.onTextLayout,
-            modifier = Modifier
-                .fillMaxWidth()
-                .drawParagraphBackgrounds(backgroundsResult.backgroundsToDraw),
-        )
-    }
+    Text(
+        text = annotated.annotatedString,
+        onTextLayout = backgroundsResult.onTextLayout,
+        modifier = Modifier
+            .fillMaxWidth()
+            .drawParagraphBackgrounds(backgroundsResult.backgroundsToDraw),
+    )
 
 }
 
@@ -335,7 +333,6 @@ fun CombinedExample() {
         text = styledComment.annotatedString,
         inlineContent = styledComment.inlineContentMap
     )
-
 }
 ```
 

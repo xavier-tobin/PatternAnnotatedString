@@ -33,8 +33,8 @@ just a few lines of code. All you have to do is:
 
 # Extra features
 
-If you want to use extra features, like paragraph backgrounds or inline composable content, the API
-is still simple:
+PatternAnnotatedString supports some features that AnnotatedString does not, including paragraph
+backgrounds. It also makes it much easier to render custom inline `@Composable` content.
 
 1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
     ```kotlin
@@ -44,16 +44,17 @@ is still simple:
             // Return an InlineTextContent composable
         }
     )
-    // You can also use paragraphPatternAnnotation for custom paragraph styles
+    // You can also use paragraphPatternAnnotation() for custom paragraph styles
     ```
 
-2. Use `string.getPatternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
+2. Use `string.patternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
     ```kotlin   
     val result = "Thanks @xavier, this is cool!".patternAnnotatedString(inlineContentAnnotation)
     ```
 
-3. Use the result, which contains an `AnnotatedString`, `inlineContentMap` and
-   `paragraphBackgroundAnnotations`. See examples further below for how to use them!
+3. Use the result, which contains an `annotatedString`, `inlineContentMap` and
+   `paragraphBackgroundAnnotations`, to render backgrounds and inline content. See examples further
+   below for how to use them!
 
 # Examples
 

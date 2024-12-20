@@ -15,8 +15,8 @@ data class PatternAnnotatedString(
     val annotatedString: AnnotatedString,
     val styled: Boolean,
     val paragraphBackgroundAnnotations: List<ParagraphBackgroundAnnotation> = listOf(),
-    val discoveredInlineContent: List<DiscoveredInlineContent> = listOf(),
     val inlineContentMap: Map<String, InlineTextContent> = mapOf(),
+    val discoveredInlineContent: List<DiscoveredInlineContent> = listOf(),
 )
 
 /**

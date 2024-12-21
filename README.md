@@ -101,10 +101,10 @@ In this example, we create a pattern annotation to highlight text that matches t
 query:
 
 ```kotlin
-@Composable
-fun SearchQueryHighlighting() {
 
-    var searchQuery by remember { mutableStateOf("") }
+
+@Composable
+fun SearchQueryHighlightedText(val searchQuery: String) {
 
     val highlightMatching = remember(searchQuery) {
         basicPatternAnnotation(
@@ -117,11 +117,6 @@ fun SearchQueryHighlighting() {
     val highlightedText = textToHighlight.annotatedWith(
         patternAnnotation = highlightMatching,
         performanceStrategy = PerformanceStrategy.Performant
-    )
-
-    TextField(
-        value = searchQuery,
-        onValueChange = { searchQuery = it }
     )
 
     Text(highlightedText)

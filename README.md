@@ -134,7 +134,7 @@ fun SearchQueryHighlighting() {
 > If you are building a pattern annotation based on user input, make sure to set `literalPattern` to
 > true - invalid regex will crash the app.
 
-> [!WARNING]
+> [!IMPORTANT]
 > Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
@@ -183,7 +183,7 @@ fun SimpleInlineExample() {
 
 > [!TIP]
 > If you need to render inline content using, say, data fetched from an API, you can generate your
-> pattern annotation in the Composable, but make sure to use `remember` with a key, such as in the
+> pattern annotation in the Composable. Ensure you use `remember` with a key, such as in the
 > search highlighting example, to avoid rebuilding the pattern on every recomposition.
 
 ### Basic paragraph styling

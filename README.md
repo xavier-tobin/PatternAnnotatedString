@@ -44,8 +44,6 @@ just a few lines of code. All you have to do is:
     ```kotlin
     Text(text = annotatedString)
     ```
-
-4. Enjoy the result:
    ![Basic italics usage example](images/basic_italics_example.png)
 
 # Advanced usage

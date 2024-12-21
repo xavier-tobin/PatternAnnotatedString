@@ -1,22 +1,23 @@
 # PatternAnnotatedString
 
-Easily and dynamically style text using patterns/regular expressions in Jetpack Compose.
+Easily style text using patterns/regular expressions in Jetpack Compose.
 
-- [x] 📝 Alternative to `buildAnnotatedString` for dynamic text styling
-- [x] 🎨 Simple, highly flexible Composable API
+- [x] 📝 Alternative to `buildAnnotatedString` for styling user-generated or dynamic text
+- [x] 🎨 Simple, highly flexible API
 - [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
+- [x] 📚 Can be used 
 
 > _Built to render markdown previews and for highlighting global search results
 in [Bundled Notes](https://bundlednotes.com)._
 
 ## Readiness checklist
 
-This library has been an internal experiment for about a month, but I plan to release it as a
+`PatternAnnotatedString` has been an internal experiment for about a month, but I plan to release it as a
 maintained library after I've done the following:
 
-- [ ] Wait til compose-bom includes latest StringAnnotation APIs
+- [ ] Wait until stable compose-bom includes latest StringAnnotation APIs
 - [ ] Add more examples to README
 - [ ] Add tests
 - [ ] Work out how to release library via Maven/Gradle
@@ -44,41 +45,26 @@ just a few lines of code. All you have to do is:
     Text(text = annotatedString)
     ```
 
-4. Enjoy the beautiful result:
+4. Enjoy the result:
    ![Basic italics usage example](images/basic_italics_example.png)
 
 # Advanced usage
 
-PatternAnnotatedString supports some features that `AnnotatedString` does not (out of the box),
-including paragraph backgrounds. It also makes it much easier to render custom inline `@Composable`
-content. To use these extra features, all you need to do is use `patternAnnotatedString()` instead
-of `annotatedWith()`:
-
-1. Create PatternAnnotation/s that map patterns to inline content or paragraph styles:
-    ```kotlin
-    val usernamePills = inlineContentPatternAnnotation(
-        pattern = "@[A-Za-z0-9_]+",
-        inlineContent = { matchedText ->
-            // Return an InlineTextContent composable
-        }
-    )
-    // You can also use paragraphPatternAnnotation() for custom paragraph styles
-    ```
-
-2. Use `String.patternAnnotatedString(patternAnnotation/s)` to get a PatternAnnotatedString:
-    ```kotlin   
-    val result = "Thanks @xavier, this is cool!".patternAnnotatedString(usernamePills)
-    ```
-
-3. Use the result, which contains an `annotatedString`, `inlineContentMap` and
-   `paragraphBackgroundAnnotations`, to render backgrounds and inline content. See examples further
-   below for how to use them!
+For basic text styling, `AnnotatedString` does the job. However, `PatternAnnotatedString` supports
+some extra features that `AnnotatedString` does not, most notably paragraph backgrounds and dynamic
+inline-content. To use these extra features, all you need to do is use `patternAnnotatedString()`
+instead of `annotatedWith()`. Rather than returning a plain `AnnotatedString`, it returns a
+`PatternAnnotatedString` with extra goodies to render paragraph backgrounds and inline content. See
+the examples below for more information.
 
 # Examples
 
-## Basic text styling
+### Basic text styling
 
 > Italics, bold, font style, shadow, background etc.
+
+
+
 
 ```kotlin
 val redFruit = basicPatternAnnotation(
@@ -105,7 +91,7 @@ fun BasicExample() {
 > Many annotations, long text or complex patterns may impact performance, but the library includes
 > options to cater for this - please see the Performance considerations section.
 
-## Dynamic text styles
+### Dynamic text styles
 
 > Search text highlighting, find in page etc.
 
@@ -157,7 +143,7 @@ fun SearchQueryHighlighting() {
      `annotatedWith()` or `patternAnnotatedString()`. This means that text is styled in a
      background thread and leads to a *slight* delay in the styles becoming visible.
 
-## Inline content
+### Inline content
 
 > Custom inline content, like rendering link previews, user pills, hashtags, etc.
 
@@ -200,7 +186,7 @@ fun SimpleInlineExample() {
 > pattern annotation in the Composable, but make sure to use `remember` with a key, such as in the
 > search highlighting example, to avoid rebuilding the pattern on every recomposition.
 
-## Basic paragraph styling
+### Basic paragraph styling
 
 > Control text layout, line height, alignment
 
@@ -308,7 +294,7 @@ fun ParagraphStyling() {
 > 3. Backgrounds only appear on the second re-composition, so keep this in mind when designing your
      UI.
 
-## Multiple/combined annotations
+### Multiple/combined annotations
 
 You are not limited to one pattern annotation (or type of pattern annotation) when styling a
 string - both `annotatedWith()` and `patternAnnotatedString()` can take a list of annotations.

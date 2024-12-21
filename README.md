@@ -14,7 +14,8 @@ in [Bundled Notes](https://bundlednotes.com)._
 
 ## Readiness checklist
 
-`PatternAnnotatedString` has been an internal experiment for about a month, but I plan to release it as a
+`PatternAnnotatedString` has been an internal experiment for about a month, but I plan to release it
+as a
 maintained library after I've done the following:
 
 - [ ] Wait until stable compose-bom includes latest StringAnnotation APIs
@@ -48,21 +49,18 @@ just a few lines of code. All you have to do is:
 
 # Advanced usage
 
-For basic text styling, `AnnotatedString` does the job. However, `PatternAnnotatedString` supports
-some extra features that `AnnotatedString` does not, most notably paragraph backgrounds and dynamic
-inline-content. To use these extra features, all you need to do is use `patternAnnotatedString()`
-instead of `annotatedWith()`. Rather than returning a plain `AnnotatedString`, it returns a
-`PatternAnnotatedString` with extra goodies to render paragraph backgrounds and inline content. See
-the examples below for more information.
+For basic text styling, the `AnnotatedString` returned by `annotatedWith()` does the job. However,
+`PatternAnnotatedString` supports some features that `AnnotatedString` does not, most notably
+paragraph backgrounds and dynamic inline-content. To use these extra features, you can use
+`patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` as well
+as the extra data to render paragraph backgrounds and inline content. See the examples below for
+more information.
 
 # Examples
 
 ### Basic text styling
 
 > Italics, bold, font style, shadow, background etc.
-
-
-
 
 ```kotlin
 val redFruit = basicPatternAnnotation(

@@ -7,7 +7,7 @@ Easily style text using patterns/regular expressions in Jetpack Compose.
 - [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
-- [x] 📚 Can be used 
+- [x] 📚 Can be used to render markdown, or style text based on custom syntax
 
 > _Built to render markdown previews and for highlighting global search results
 in [Bundled Notes](https://bundlednotes.com)._

@@ -52,7 +52,7 @@ just a few lines of code. All you have to do is:
 For basic text styling, the `AnnotatedString` returned by `annotatedWith()` does the job. However,
 `PatternAnnotatedString` supports some features that `AnnotatedString` does not, most notably
 paragraph backgrounds and dynamic inline content. To use these extra features, you can use
-`patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` _and_ 
+`patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` _and_
 the extra data to render paragraph backgrounds and inline content. See the examples below for
 more information.
 
@@ -93,7 +93,10 @@ fun BasicExample() {
 
 You may want to style text based on a pattern you don't know at compile-time. For example,
 highlighting matching text in results from a search query the user inputs. This is _easy_ to
-achieve with this library, but there are some important considerations to note:
+achieve with this library, but there are some important considerations to note.
+
+In this example, we create a pattern annotation to highlight text that matches the user's search
+query:
 
 ```kotlin
 @Composable
@@ -188,7 +191,8 @@ fun SimpleInlineExample() {
 > Control text layout, line height, alignment
 
 If you don't need to draw custom backgrounds behind paragraphs, paragraph styling is simple. You can
-customise paragraph styles and easily align text, change line spacing, etc.
+easily align text, change line height, spacing and more using `ParagraphStyle`. In this example, we
+create a pattern annotation that right-aligns any text in brackets:
 
 ```kotlin
 val rightAlignedBrackets = paragraphPatternAnnotation(
@@ -221,19 +225,22 @@ fun ParagraphAlignmentExample() {
 
 > Custom backgrounds behind paragraphs, as well as text styling and line height adjustments
 
-It is not possible to draw custom backgrounds with `ParagraphStyle` - you can only change text
-arrangement/layout properties. To fix this, `PatternAnnotatedString` includes a few helper
-functions and APIs that make paragraph backgrounds easy to implement.
+It is not possible to draw custom backgrounds with `ParagraphStyle` or `AnnotatedString` out of the
+box. To fix this, `PatternAnnotatedString` includes a few helper functions and APIs that make
+paragraph backgrounds easy to implement.
 
 __Paragraph background styling steps:__
 
-1. Create a `PatternAnnotation` using `paragraphPatternAnnotation()` with Paragraph styles and/or
-   backgrounds.
-2. Use `String.getPatternAnnotatedString()` to get a `PatternAnnotatedString` which
-   includes background annotations.
-3. Call `useParagraphBackgrounds` with the background annotations.
-4. Pass the `annotatedString` and `useParagraphBackgrounds` result to a `Text` composable, using the
-   `drawParagraphBackgrounds` modifier and the `onTextLayout` parameter.
+1. Create a pattern annotation using `paragraphPatternAnnotation()` with your desired paragraph
+   styles/pattern.
+2. Use `String.getPatternAnnotatedString()` to get a `PatternAnnotatedString` which includes
+   background annotations.
+3. Call `rememberParagraphBackgrounds()` and pass the the background annotations.
+4. Pass the `annotatedString` and the result of `rememberParagraphBackgrounds` to a `Text`
+5. composable, using the `drawParagraphBackgrounds` modifier and the `onTextLayout` parameter.
+
+In this example, we create a pattern annotation that draws a grey background around a block of
+code:
 
 ```kotlin
 val codeBlockAnnotation = paragraphPatternAnnotation(
@@ -296,7 +303,8 @@ fun ParagraphStyling() {
 You are not limited to one pattern annotation (or type of pattern annotation) when styling a
 string - both `annotatedWith()` and `patternAnnotatedString()` can take a list of annotations.
 
-This makes it easy to create rich, custom text styles:
+This makes it easy to create rich, custom text styles in only a few lines of code. Here, we combine
+several of the above examples:
 
 ```kotlin
 @Composable

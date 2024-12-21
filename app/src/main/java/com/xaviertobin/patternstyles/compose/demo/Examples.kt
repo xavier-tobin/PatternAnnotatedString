@@ -41,7 +41,7 @@ import com.xaviertobin.patternstyles.patternAnnotatedString
 import com.xaviertobin.patternstyles.inlineTextContent
 import com.xaviertobin.patternstyles.inlineContentPatternAnnotation
 import com.xaviertobin.patternstyles.paragraphPatternAnnotation
-import com.xaviertobin.patternstyles.useParagraphBackgrounds
+import com.xaviertobin.patternstyles.rememberParagraphBackgrounds
 
 
 /**
@@ -207,7 +207,7 @@ fun ParagraphStyling() {
         patternAnnotation = codeBlockAnnotation
     )
 
-    val backgroundsResult = useParagraphBackgrounds(
+    val backgroundsResult = rememberParagraphBackgrounds(
         paragraphBackgroundAnnotations = annotated.paragraphBackgroundAnnotations
     )
 

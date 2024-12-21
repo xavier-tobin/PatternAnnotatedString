@@ -22,7 +22,7 @@ data class BackgroundsToDraw(
 )
 
 @Composable
-fun useParagraphBackgrounds(
+fun rememberParagraphBackgrounds(
     paragraphBackgroundAnnotations: List<ParagraphBackgroundAnnotation>,
 ): ParagraphBackgroundsResult {
 

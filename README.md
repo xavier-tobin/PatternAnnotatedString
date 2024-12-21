@@ -1,8 +1,8 @@
 # PatternAnnotatedString
 
-AnnotatedStrings are a powerful tool for styling text in Android/Compose, but the current APIs are only useful if you know the text you're styling when you're coding.  
+`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but the current APIs are only useful if you know the text you're styling when you're coding.  
 
-This library solves the problem of styling user-generated or dynamic text in Android/Jetpack Compose. Simply map patterns -> styles, and then use them to generate an `AnnotatedString`.
+This library solves the problem of styling user-generated or dynamic text. Simply map patterns -> styles, and then use them to generate an `AnnotatedString`.
 
 - [x] 📝 Alternative to `buildAnnotatedString` for generating styled AnnotatedStrings
 - [x] 🚀 Respects Compose lifecycle with performance options

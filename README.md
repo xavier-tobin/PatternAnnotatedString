@@ -2,9 +2,11 @@
 
 Easily style text using patterns/regular expressions in Jetpack Compose.
 
-- [x] 📝 Alternative to `buildAnnotatedString` for styling user-generated or dynamic text
-- [x] 🎨 Simple, highly flexible API
+// Need to mention support for SpanStyle & ParagraphStyle
+
+- [x] 📝 Alternative to `buildAnnotatedString` for generating styled `AnnotatedString`s
 - [x] 🚀 Respects Compose lifecycle with performance options
+- [x] 📜 Simple, highly flexible API
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
 - [x] 📚 Can be used to render markdown, or style text based on custom syntax

@@ -52,8 +52,8 @@ just a few lines of code. All you have to do is:
 For basic text styling, the `AnnotatedString` returned by `annotatedWith()` does the job. However,
 `PatternAnnotatedString` supports some features that `AnnotatedString` does not, most notably
 paragraph backgrounds and dynamic inline content. To use these extra features, you can use
-`patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` as well
-as the extra data to render paragraph backgrounds and inline content. See the examples below for
+`patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` _and_ 
+the extra data to render paragraph backgrounds and inline content. See the examples below for
 more information.
 
 # Examples

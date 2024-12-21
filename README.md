@@ -51,7 +51,7 @@ just a few lines of code. All you have to do is:
 
 For basic text styling, the `AnnotatedString` returned by `annotatedWith()` does the job. However,
 `PatternAnnotatedString` supports some features that `AnnotatedString` does not, most notably
-paragraph backgrounds and dynamic inline-content. To use these extra features, you can use
+paragraph backgrounds and dynamic inline content. To use these extra features, you can use
 `patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` as well
 as the extra data to render paragraph backgrounds and inline content. See the examples below for
 more information.
@@ -147,7 +147,8 @@ Compose includes support for inline text content in `buildAnnotatedString` and t
 Composable, but it can be cumbersome to use - and very difficult with dynamic text.
 
 `String.patternAnnotatedString()` can easily build and return an
-`inlineContentMap` that the `Text()` composable can use:
+`inlineContentMap` that the `Text()` composable can use. See the example below, where @mentions are
+rendered as user pills:
 
 ```kotlin
 val usernameAnnotation = inlineContentPatternAnnotation(

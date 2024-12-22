@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,24 +23,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextIndent
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.xaviertobin.patternstyles.basicPatternAnnotation
 import com.xaviertobin.patternstyles.annotatedWith
+import com.xaviertobin.patternstyles.clickablePatternAnnotation
 import com.xaviertobin.patternstyles.drawParagraphBackgrounds
 import com.xaviertobin.patternstyles.patternAnnotatedString
 import com.xaviertobin.patternstyles.inlineTextContent
 import com.xaviertobin.patternstyles.inlineContentPatternAnnotation
+import com.xaviertobin.patternstyles.linkPatternAnnotation
 import com.xaviertobin.patternstyles.paragraphPatternAnnotation
 import com.xaviertobin.patternstyles.rememberParagraphBackgrounds
 
@@ -85,6 +93,47 @@ fun BasicExample() {
         )
     }
 }
+
+/**
+ * # Links & hyperlinks
+ */
+val linkAnnotation = linkPatternAnnotation(
+    pattern = "Bundled Notes",
+    url = { "https://bundlednotes.com" }
+)
+
+@Preview
+@Composable
+fun BasicLinkExample() {
+    PreviewLayout {
+        Text(
+            text = "Check out the Bundled Notes website!".annotatedWith(linkAnnotation)
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun BasicClickExample() {
+
+    var clickCount by remember { mutableIntStateOf(0) }
+    val clickText = "I have been clicked $clickCount times"
+
+    val clickableAnnotation = remember {
+        clickablePatternAnnotation(
+            pattern = ".*",
+            onClick = { clickCount++ }
+        )
+    }
+
+    PreviewLayout {
+        Text(
+            text = clickText.annotatedWith(clickableAnnotation)
+        )
+    }
+}
+
 
 /**
  * ## Search text highlighting

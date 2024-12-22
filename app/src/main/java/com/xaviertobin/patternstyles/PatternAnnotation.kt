@@ -41,6 +41,36 @@ data class MatchDetails(
     val group: String?
 )
 
+//internal fun buildComplexPatternAnnotation(
+//    pattern: String,
+//    caseSensitive: Boolean = false,
+//    literalPattern: Boolean = false,
+//    spanStyle: SpanStyle? = null,
+//    paragraphStyle: ParagraphStyle? = null,
+//    inlineContentTag: String? = null,
+//    drawParagraphBackground: OnDrawBackground? = null,
+//    inlineContent: InlineContentFunction? = null,
+//    linkAnnotationPlan: LinkAnnotationPlan? = null
+//): PatternAnnotation {
+//    return PatternAnnotation(
+//        pattern = Pattern.compile(
+//            pattern,
+//            (if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE) or (if (literalPattern) Pattern.LITERAL else 0)
+//        ),
+//        spanStyle = if (spanStyle != null) {
+//            { spanStyle }
+//        } else null,
+//        paragraphStyle = if (paragraphStyle != null) {
+//            { paragraphStyle }
+//        } else null,
+//        inlineContentTag = inlineContentTag,
+//        drawParagraphBackground = drawParagraphBackground,
+//        inlineContent = inlineContent,
+//        linkAnnotationPlan = linkAnnotationPlan
+//    )
+//}
+
+
 fun basicPatternAnnotation(
     pattern: String,
     literalPattern: Boolean = false,

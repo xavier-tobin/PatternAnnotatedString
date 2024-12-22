@@ -6,7 +6,8 @@ are only useful if you know the text you're styling when you're coding.
 This library solves the problem of styling user-generated or dynamic text. Simply map patterns ->
 styles, and then use them to generate an `AnnotatedString`.
 
-- [x] 📝 Alternative to `buildAnnotatedString` for generating styled AnnotatedStrings
+- [x] 📝 Alternative to `buildAnnotatedString` for generating AnnotatedString
+- [x] 📎 Easy clickable and hyperlink text styling
 - [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📜 Simple, highly flexible API
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds

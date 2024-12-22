@@ -118,7 +118,7 @@ fun BasicLinkExample() {
 fun BasicClickExample() {
 
     var clickCount by remember { mutableIntStateOf(0) }
-    val clickText = "I have been clicked $clickCount times"
+    val clickCountText = "I have been clicked $clickCount times"
 
     val clickableAnnotation = remember {
         clickablePatternAnnotation(
@@ -129,7 +129,7 @@ fun BasicClickExample() {
 
     PreviewLayout {
         Text(
-            text = clickText.annotatedWith(clickableAnnotation)
+            text = clickCountText.annotatedWith(clickableAnnotation)
         )
     }
 }

@@ -1,8 +1,10 @@
 # PatternAnnotatedString
 
-`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but the current APIs are only useful if you know the text you're styling when you're coding.  
+`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but the current APIs
+are only useful if you know the text you're styling when you're coding.
 
-This library solves the problem of styling user-generated or dynamic text. Simply map patterns -> styles, and then use them to generate an `AnnotatedString`.
+This library solves the problem of styling user-generated or dynamic text. Simply map patterns ->
+styles, and then use them to generate an `AnnotatedString`.
 
 - [x] 📝 Alternative to `buildAnnotatedString` for generating styled AnnotatedStrings
 - [x] 🚀 Respects Compose lifecycle with performance options
@@ -81,6 +83,65 @@ fun BasicExample() {
 ###### Result:
 
 ![Basic Example](images/basic_example.png)
+
+### Links & hyperlinks
+
+> For adding Clickable hyperlinks to text
+
+Use `linkPatternAnnotation()` to create a pattern annotation, and pass a handler that returns the
+URL to open. The following example will replace all instances of "Bundled Notes" with a hyperlink to
+the website.
+
+```kotlin
+val linkAnnotation = linkPatternAnnotation(
+    pattern = "Bundled Notes",
+    url = { "https://bundlednotes.com" }
+)
+
+@Composable
+fun LinksExample() {
+    Text(
+        text = "Check out the Bundled Notes website!".annotatedWith(linkAnnotation)
+    )
+}
+```
+
+###### Result:
+
+![Hyperlinks Example](images/link_example.png)
+
+### Clickable test
+
+> Responding to clicks on text that matches a pattern
+
+Creating a clickable portion of text is just as easy as creating a link. However, most of the time
+you will need to do something with state or context in `onClick`, and therefore you'll need to
+create it _in_ your Composable. This is okay, but make sure to wrap the creation of your pattern
+annotation in `remember` to avoid re-building it every recomposition.
+
+```kotlin
+fun BasicClickExample() {
+
+    var clickCount by remember { mutableIntStateOf(0) }
+
+    val clickableAnnotation = remember {
+        clickablePatternAnnotation(
+            pattern = ".*",
+            onClick = { clickCount++ }
+        )
+    }
+
+    Text(
+        text = "I have been clicked $clickCount times".annotatedWith(clickableAnnotation)
+    )
+
+}
+```
+
+###### Result:
+
+![Hyperlinks Example](images/clickable_example.png)
+
 
 
 > [!IMPORTANT]

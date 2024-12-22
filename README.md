@@ -109,7 +109,7 @@ fun LinksExample() {
 
 ###### Result:
 
-![Hyperlinks Example](images/link_example.png)
+![Hyperlinks Example](images/link_example.webp)
 
 ### Clickable test
 
@@ -141,7 +141,7 @@ fun BasicClickExample() {
 
 ###### Result:
 
-![Hyperlinks Example](images/clickable_example.png)
+![Hyperlinks Example](images/clickable_example.webp)
 
 
 

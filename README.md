@@ -85,12 +85,19 @@ fun BasicExample() {
 
 ![Basic Example](images/basic_example.png)
 
+
+> [!IMPORTANT]
+> `annotatedWith` is a Composable function and only re-calculates styles if the text or
+> annotations/s change.
+> Many annotations, long text or complex patterns may impact performance, but the library includes
+> options to cater for this - please see the Performance considerations section.
+
 ### Links & hyperlinks
 
 > For adding Clickable hyperlinks to text
 
 Use `linkPatternAnnotation()` to create a pattern annotation, and pass a handler that returns the
-URL to open. The following example will replace all instances of "Bundled Notes" with a hyperlink to
+URL to open. The following example will turn all instances of "Bundled Notes" into a hyperlink to
 the website.
 
 ```kotlin
@@ -119,10 +126,10 @@ fun LinksExample() {
 
 > Responding to clicks on text that matches a pattern
 
-Creating a clickable portion of text is just as easy as creating a link. However, most of the time
-you will need to do something with state or context in `onClick`, and therefore you'll need to
-create it _in_ your Composable. This is okay, but make sure to wrap the creation of your pattern
-annotation in `remember` to avoid re-building it every recomposition.
+Creating a clickable portion of text is just as easy as creating a link or other styles. However,
+most of the time you will need to do something with state or context in `onClick`, and therefore
+you'll need to create it _in_ your Composable. This is okay, but make sure to wrap the creation
+of your pattern annotation in `remember` to avoid re-building it every recomposition.
 
 ```kotlin
 fun BasicClickExample() {
@@ -146,14 +153,6 @@ fun BasicClickExample() {
 ###### Result:
 
 ![Hyperlinks Example](images/clickable_example.webp)
-
-
-
-> [!IMPORTANT]
-> `annotatedWith` is a Composable function and only re-calculates styles if the text or
-> annotations/s change.
-> Many annotations, long text or complex patterns may impact performance, but the library includes
-> options to cater for this - please see the Performance considerations section.
 
 ### Dynamic text styles
 

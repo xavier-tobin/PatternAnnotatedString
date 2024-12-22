@@ -115,7 +115,7 @@ fun LinksExample() {
 > The default SpanStyle for links is `SpanStyle(textDecoration = TextDecoration.Underline)`, but
 > just like with any pattern annotation, you can change it!
 
-### Clickable test
+### Clickable text
 
 > Responding to clicks on text that matches a pattern
 

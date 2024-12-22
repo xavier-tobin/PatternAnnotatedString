@@ -1,6 +1,8 @@
 # PatternAnnotatedString
 
-Easily style text using patterns/regular expressions in Jetpack Compose.
+`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but the current APIs are only useful if you know the text you're styling when you're coding.  
+
+This library solves the problem of styling user-generated or dynamic text. Simply map patterns -> styles, and then use them to generate an `AnnotatedString`.
 
 - [x] 📝 Alternative to `buildAnnotatedString` for generating styled AnnotatedStrings
 - [x] 🚀 Respects Compose lifecycle with performance options
@@ -99,10 +101,10 @@ In this example, we create a pattern annotation to highlight text that matches t
 query:
 
 ```kotlin
-@Composable
-fun SearchQueryHighlighting() {
 
-    var searchQuery by remember { mutableStateOf("") }
+
+@Composable
+fun SearchQueryHighlightedText(val searchQuery: String) {
 
     val highlightMatching = remember(searchQuery) {
         basicPatternAnnotation(
@@ -117,11 +119,6 @@ fun SearchQueryHighlighting() {
         performanceStrategy = PerformanceStrategy.Performant
     )
 
-    TextField(
-        value = searchQuery,
-        onValueChange = { searchQuery = it }
-    )
-
     Text(highlightedText)
 }
 ```
@@ -134,7 +131,7 @@ fun SearchQueryHighlighting() {
 > If you are building a pattern annotation based on user input, make sure to set `literalPattern` to
 > true - invalid regex will crash the app.
 
-> [!WARNING]
+> [!IMPORTANT]
 > Note the methods to avoid excessive or slow re-compositions when using dynamic patterns:
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
@@ -183,7 +180,7 @@ fun SimpleInlineExample() {
 
 > [!TIP]
 > If you need to render inline content using, say, data fetched from an API, you can generate your
-> pattern annotation in the Composable, but make sure to use `remember` with a key, such as in the
+> pattern annotation in the Composable. Ensure you use `remember` with a key, such as in the
 > search highlighting example, to avoid rebuilding the pattern on every recomposition.
 
 ### Basic paragraph styling

@@ -1,6 +1,8 @@
 package com.xaviertobin.patternstyles
 
 import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ParagraphStyle
@@ -70,7 +72,6 @@ internal fun buildPatternAnnotation(
     )
 }
 
-
 fun basicPatternAnnotation(
     pattern: String,
     literalPattern: Boolean = false,
@@ -136,16 +137,14 @@ fun linkPatternAnnotation(
     focusedStyle: SpanStyle? = null,
     hoveredStyle: SpanStyle? = null,
     pressedStyle: SpanStyle? = null
-) = buildPatternAnnotation(
+) = linkPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     spanStyle = spanStyle,
-    linkAnnotationPlan = LinkAnnotationPlan(
-        urlTagHandler = { url },
-        focusedStyle = focusedStyle,
-        hoveredStyle = hoveredStyle,
-        pressedStyle = pressedStyle
-    )
+    url = { url },
+    focusedStyle = focusedStyle,
+    hoveredStyle = hoveredStyle,
+    pressedStyle = pressedStyle
 )
 
 fun clickablePatternAnnotation(
@@ -157,6 +156,142 @@ fun clickablePatternAnnotation(
     hoveredStyle: SpanStyle? = null,
     pressedStyle: SpanStyle? = null
 ) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    linkAnnotationPlan = LinkAnnotationPlan(
+        urlTagHandler = { it },
+        onClick = onClick,
+        focusedStyle = focusedStyle,
+        hoveredStyle = hoveredStyle,
+        pressedStyle = pressedStyle
+    )
+)
+
+@Composable
+internal fun rememberPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    literalPattern: Boolean = false,
+    spanStyle: SpanStyle? = null,
+    paragraphStyle: ParagraphStyle? = null,
+    inlineContentTag: String? = null,
+    drawParagraphBackground: OnDrawBackground? = null,
+    inlineContent: InlineContentFunction? = null,
+    linkAnnotationPlan: LinkAnnotationPlan? = null
+): PatternAnnotation {
+    return remember(
+        pattern,
+        caseSensitive,
+        literalPattern,
+        spanStyle,
+        paragraphStyle,
+        inlineContentTag,
+        linkAnnotationPlan
+    ) {
+        buildPatternAnnotation(
+            pattern = pattern,
+            caseSensitive = caseSensitive,
+            literalPattern = literalPattern,
+            spanStyle = spanStyle,
+            paragraphStyle = paragraphStyle,
+            inlineContentTag = inlineContentTag,
+            drawParagraphBackground = drawParagraphBackground,
+            inlineContent = inlineContent,
+            linkAnnotationPlan = linkAnnotationPlan
+        )
+    }
+}
+
+@Composable
+fun rememberBasicPatternAnnotation(
+    pattern: String,
+    literalPattern: Boolean = false,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = null,
+) = rememberPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    literalPattern = literalPattern,
+    spanStyle = spanStyle
+)
+
+@Composable
+fun rememberInlineContentPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    inlineContent: InlineContentFunction,
+) = rememberPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    inlineContent = inlineContent
+)
+
+@Composable
+fun rememberParagraphPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = null,
+    paragraphStyle: ParagraphStyle? = null,
+    onDrawParagraphBackground: OnDrawBackground? = null,
+) = rememberPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    paragraphStyle = paragraphStyle,
+    drawParagraphBackground = onDrawParagraphBackground
+)
+
+@Composable
+fun rememberLinkPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = SpanStyle(textDecoration = TextDecoration.Underline),
+    url: UrlTagHandler,
+    focusedStyle: SpanStyle? = null,
+    hoveredStyle: SpanStyle? = null,
+    pressedStyle: SpanStyle? = null
+) = rememberPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    linkAnnotationPlan = LinkAnnotationPlan(
+        urlTagHandler = url,
+        focusedStyle = focusedStyle,
+        hoveredStyle = hoveredStyle,
+        pressedStyle = pressedStyle
+    )
+)
+
+@Composable
+fun rememberLinkPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = SpanStyle(textDecoration = TextDecoration.Underline),
+    url: String,
+    focusedStyle: SpanStyle? = null,
+    hoveredStyle: SpanStyle? = null,
+    pressedStyle: SpanStyle? = null
+) = rememberLinkPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    url = { url },
+    focusedStyle = focusedStyle,
+    hoveredStyle = hoveredStyle,
+    pressedStyle = pressedStyle
+)
+
+@Composable
+fun rememberClickablePatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = SpanStyle(textDecoration = TextDecoration.Underline),
+    onClick: (matchingText: String) -> Unit,
+    focusedStyle: SpanStyle? = null,
+    hoveredStyle: SpanStyle? = null,
+    pressedStyle: SpanStyle? = null
+) = rememberPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     spanStyle = spanStyle,

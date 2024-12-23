@@ -14,15 +14,13 @@ in [Bundled Notes](https://bundlednotes.com)._
 
 ### Features
 
-- [x] 📝 Flexible alternative to `buildAnnotatedString` for generating `AnnotatedString`s
-- [x] 📎 Easily create clickable links & text
-- [x] 🚀 Respects Compose lifecycle with performance options
-- [x] 📜 Simple, highly flexible API
-- [x] 📦 Out-of-the-box support for custom paragraph backgrounds
-- [x] 🧩 Easily render custom inline content
-- [x] 📚 Can be used to render markdown, or style text based on custom syntax
-- [x] 🎨 Supports multiple pattern annotations on a single string
+- [x] 📝 Flexible alternative to `buildAnnotatedString`
 - [x] ⚖️ Extremely lightweight - no third party dependencies
+- [x] 🚀 Respects Compose lifecycle
+- [x] 📎 Easily add clickable links & text
+- [x] 📦 Supports custom paragraph backgrounds
+- [x] 🧩 Easily render custom inline content
+- [x] 📚 Can be used to render markdown
 
 ## Readiness checklist
 
@@ -142,20 +140,16 @@ of your pattern annotation in `remember` to avoid re-building it every recomposi
 
 ```kotlin
 fun BasicClickExample() {
-
     var clickCount by remember { mutableIntStateOf(0) }
 
-    val clickableAnnotation = remember {
-        clickablePatternAnnotation(
-            pattern = ".*",
-            onClick = { clickCount++ }
-        )
-    }
+    val clickableAnnotation = rememberClickablePatternAnnotation(
+        pattern = ".*",
+        onClick = { clickCount++ }
+    )
 
     Text(
         text = "I have been clicked $clickCount times".annotatedWith(clickableAnnotation)
     )
-
 }
 ```
 
@@ -180,13 +174,11 @@ query:
 @Composable
 fun SearchQueryHighlightedText(val searchQuery: String) {
 
-    val highlightMatching = remember(searchQuery) {
-        basicPatternAnnotation(
-            pattern = searchQuery,
-            literalPattern = true,
-            spanStyle = SpanStyle(background = Color.Yellow)
-        )
-    }
+    val highlightMatching = rememberBasicPatternAnnotation(
+        pattern = searchQuery,
+        literalPattern = true,
+        spanStyle = SpanStyle(background = Color.Yellow)
+    )
 
     val highlightedText = textToHighlight.annotatedWith(
         patternAnnotation = highlightMatching,

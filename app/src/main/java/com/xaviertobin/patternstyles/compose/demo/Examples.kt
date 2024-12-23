@@ -23,32 +23,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextLinkStyles
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextIndent
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.xaviertobin.patternstyles.basicPatternAnnotation
+import com.xaviertobin.patternstyles.PerformanceStrategy
 import com.xaviertobin.patternstyles.annotatedWith
-import com.xaviertobin.patternstyles.clickablePatternAnnotation
+import com.xaviertobin.patternstyles.basicPatternAnnotation
 import com.xaviertobin.patternstyles.drawParagraphBackgrounds
-import com.xaviertobin.patternstyles.patternAnnotatedString
-import com.xaviertobin.patternstyles.inlineTextContent
 import com.xaviertobin.patternstyles.inlineContentPatternAnnotation
+import com.xaviertobin.patternstyles.inlineTextContent
 import com.xaviertobin.patternstyles.linkPatternAnnotation
 import com.xaviertobin.patternstyles.paragraphPatternAnnotation
+import com.xaviertobin.patternstyles.patternAnnotatedString
+import com.xaviertobin.patternstyles.rememberBasicPatternAnnotation
+import com.xaviertobin.patternstyles.rememberClickablePatternAnnotation
 import com.xaviertobin.patternstyles.rememberParagraphBackgrounds
 
 
@@ -119,12 +116,12 @@ fun BasicClickExample() {
 
     var clickCount by remember { mutableIntStateOf(0) }
 
-    val clickableAnnotation = remember {
-        clickablePatternAnnotation(
-            pattern = "banana",
-            onClick = { clickCount++ }
-        )
-    }
+    val clickableAnnotation = rememberClickablePatternAnnotation(
+        pattern = "banana",
+        onClick = {
+            clickCount++
+        }
+    )
 
     PreviewLayout {
         Text(
@@ -150,20 +147,17 @@ fun SearchTextHighlighting() {
 
     var searchQuery by remember { mutableStateOf("reprehenderit") }
 
-    // You have to create a pattern annotation using the search query
-    // For performance reasons, you should remember the pattern annotation with the search query as a key
-    val highlightAnnotation = remember(searchQuery) {
-        basicPatternAnnotation(
-            pattern = searchQuery,
-            literalPattern = true,
-            spanStyle = SpanStyle(
-                background = Color.Yellow,
-            ),
+    val highlightAnnotation = rememberBasicPatternAnnotation(
+        pattern = searchQuery,
+        literalPattern = true,
+        spanStyle = SpanStyle(
+            background = Color.Yellow,
         )
-    }
+    )
 
     val highlightedText = TEXT_TO_SEARCH.annotatedWith(
-        patternAnnotation = highlightAnnotation
+        patternAnnotation = highlightAnnotation,
+        performanceStrategy = PerformanceStrategy.Performant
     )
 
     PreviewLayout {

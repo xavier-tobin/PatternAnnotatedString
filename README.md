@@ -58,7 +58,7 @@ just a few lines of code. All you have to do is:
     ```
    ![Basic italics usage example](images/basic_italics_example.png)
 
-> [!IMPORTANT]
+> [!TIP]
 > Pattern can be any valid regex pattern, or an exact matching string. The above example matches
 > against italic markdown syntax. Anything that matches the pattern will have the styles applied.
 

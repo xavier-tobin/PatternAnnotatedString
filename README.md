@@ -5,7 +5,7 @@ for styling fixed text, and is unsuitable for styling dynamic or user-generated 
 
 This library solves this problem by allowing you to create re-usable rules (a.k.a. pattern
 annotations) that map a given pattern to text styles, and then use these rules to generate an
-`AnnotatedString` from any String.
+`AnnotatedString` from any `String`.
 
 > _Built to render markdown previews and for highlighting global search results
 in [Bundled Notes](https://bundlednotes.com)._
@@ -57,6 +57,10 @@ just a few lines of code. All you have to do is:
     Text(text = annotatedString)
     ```
    ![Basic italics usage example](images/basic_italics_example.png)
+
+> [!IMPORTANT]
+> Pattern can be any valid regex pattern, or an exact matching string. The above example matches
+> against italic markdown syntax. Anything that matches the pattern will have the styles applied.
 
 # Advanced usage
 

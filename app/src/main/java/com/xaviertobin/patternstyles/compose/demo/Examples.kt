@@ -68,7 +68,7 @@ fun BasicItalicsExample() {
         Text(
             // annotatedWith accepts either one or a list of PatternAnnotations
             // So you can apply multiple styles to the same text
-            text = "I love _italic_ text!".annotatedWith(italicsMarkdown)
+            text = "I _love_ italic text!".annotatedWith(italicsMarkdown)
         )
     }
 }
@@ -122,7 +122,7 @@ fun BasicClickExample() {
 
     val clickableAnnotation = remember {
         clickablePatternAnnotation(
-            pattern = ".*",
+            pattern = "e",
             onClick = { clickCount++ }
         )
     }
@@ -283,7 +283,7 @@ fun ParagraphStyling() {
 val usernameAnnotation = inlineContentPatternAnnotation(
     pattern = "@[A-Za-z0-9_]+",
     inlineContent = { matchedText ->
-        inlineTextContent(width = 7.3.em, height = 1.8.em) {
+        inlineTextContent(width = 6.8.em, height = 1.4.em) {
             // You can use any composable here, but stick within the above bounds^
             Pill(usernameToNameMap[matchedText] ?: matchedText)
         }
@@ -316,12 +316,12 @@ fun Pill(text: String) {
         text,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
-            .padding(2.dp)
+            .padding(0.dp)
             .background(
                 color = Color.Green.copy(alpha = 0.2f),
                 shape = RoundedCornerShape(16.dp)
             )
-            .padding(horizontal = 10.dp, vertical = 2.dp)
+            .padding(horizontal = 8.dp, vertical = 1.dp)
             .fillMaxWidth()
     )
 }
@@ -340,11 +340,19 @@ val italics = basicPatternAnnotation(
 @Composable
 fun CombinedExample() {
 
-    val userComment = "Thanks @xavier, this is cool!" +
-            " I also love _italics_ and would like to give you an apple to say thanks :)"
+    val userComment = "Thanks @xavier, this is cool! " +
+            "I also _love_ italics - and I'll be sure to check out Bundled Notes. " +
+            "Coincidentally, I had an Apple and a strawberry today." +
+            "(I'll star this repository!)"
 
     val styledComment = userComment.patternAnnotatedString(
-        patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
+        patternAnnotations = listOf(
+            usernameAnnotation,
+            italics,
+            redFruit,
+            linkAnnotation,
+            rightAlignedAnnotation
+        )
     )
 
     PreviewLayout {

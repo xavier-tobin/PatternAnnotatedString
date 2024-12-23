@@ -47,8 +47,8 @@ internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: Strin
     val discoveredInlineContent = mutableListOf<DiscoveredInlineContent>()
     val inlineContentMap = mutableMapOf<String, InlineTextContent>()
 
-    this.forEach {
-        val matcher = it.pattern.matcher(text)
+    this.forEach { patternAnnotation ->
+        val matcher = patternAnnotation.pattern.matcher(text)
         while (matcher.find()) {
 
             val start = matcher.start()
@@ -57,22 +57,26 @@ internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: Strin
             val matchCount = matcher.groupCount()
             val matchDetails = MatchDetails(start, end, matcher.group(matchCount))
 
-            it.linkAnnotationPlan?.let { linkThings ->
+            if (patternAnnotation.linkAnnotationPlan != null) {
 
-                val tagOrUrl = linkThings.urlTagHandler(matchedString)
+                val tagOrUrl = patternAnnotation.linkAnnotationPlan.urlTagHandler(matchedString)
                 val textLinkStyles = TextLinkStyles(
-                    style = it.spanStyle?.invoke(matchDetails),
-                    focusedStyle = linkThings.focusedStyle,
-                    hoveredStyle = linkThings.hoveredStyle,
-                    pressedStyle = linkThings.pressedStyle
+                    style = patternAnnotation.spanStyle?.invoke(matchDetails),
+                    focusedStyle = patternAnnotation.linkAnnotationPlan.focusedStyle,
+                    hoveredStyle = patternAnnotation.linkAnnotationPlan.hoveredStyle,
+                    pressedStyle = patternAnnotation.linkAnnotationPlan.pressedStyle
                 )
 
                 allAnnotations.add(
                     AnnotatedString.Range(
-                        item = if (linkThings.onClick != null) LinkAnnotation.Clickable(
+                        item = if (patternAnnotation.linkAnnotationPlan.onClick != null) LinkAnnotation.Clickable(
                             tag = tagOrUrl,
                             styles = textLinkStyles,
-                            linkInteractionListener = { linkThings.onClick.invoke(tagOrUrl) }
+                            linkInteractionListener = {
+                                patternAnnotation.linkAnnotationPlan.onClick.invoke(
+                                    tagOrUrl
+                                )
+                            }
                         ) else LinkAnnotation.Url(
                             url = tagOrUrl,
                             styles = textLinkStyles
@@ -81,56 +85,56 @@ internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: Strin
                         end = end
                     )
                 )
-                return@forEach
-            }
+            } else {
 
-            it.spanStyle?.invoke(matchDetails)?.let { style ->
-                allAnnotations.add(AnnotatedString.Range(style, start, end))
-            }
+                patternAnnotation.spanStyle?.invoke(matchDetails)?.let { style ->
+                    allAnnotations.add(AnnotatedString.Range(style, start, end))
+                }
 
-            it.paragraphStyle?.invoke(matchDetails)?.let { style ->
-                allAnnotations.add(AnnotatedString.Range(style, start, end))
-            }
+                patternAnnotation.paragraphStyle?.invoke(matchDetails)?.let { style ->
+                    allAnnotations.add(AnnotatedString.Range(style, start, end))
+                }
 
-            it.drawParagraphBackground?.let { drawParagraphBackground ->
-                backgrounds.add(
-                    ParagraphBackgroundAnnotation(
-                        start,
-                        end - 1,
-                        drawParagraphBackground
+                patternAnnotation.drawParagraphBackground?.let { drawParagraphBackground ->
+                    backgrounds.add(
+                        ParagraphBackgroundAnnotation(
+                            start,
+                            end - 1,
+                            drawParagraphBackground
+                        )
                     )
-                )
-            }
+                }
 
-            it.inlineContentTag?.let { tag ->
-                allAnnotations.add(
-                    AnnotatedString.Range(
-                        item = StringAnnotation(tag),
-                        start = start,
-                        end = end,
-                        // Internal string in Compose INLINE_CONTENT_TAG, it's private for some reason
-                        tag = "androidx.compose.foundation.text.inlineContent"
+                patternAnnotation.inlineContentTag?.let { tag ->
+                    allAnnotations.add(
+                        AnnotatedString.Range(
+                            item = StringAnnotation(tag),
+                            start = start,
+                            end = end,
+                            // Internal string in Compose INLINE_CONTENT_TAG, it's private for some reason
+                            tag = "androidx.compose.foundation.text.inlineContent"
+                        )
                     )
-                )
-                discoveredInlineContent.add(
-                    DiscoveredInlineContent(
-                        contentId = matchedString,
-                        patternTag = tag
+                    discoveredInlineContent.add(
+                        DiscoveredInlineContent(
+                            contentId = matchedString,
+                            patternTag = tag
+                        )
                     )
-                )
-            }
+                }
 
-            it.inlineContent?.let { inlineContent ->
-                inlineContentMap[matchedString] = inlineContent(matchedString)
-                allAnnotations.add(
-                    AnnotatedString.Range(
-                        item = StringAnnotation(matchedString),
-                        start = start,
-                        end = end,
-                        // Internal string in Compose INLINE_CONTENT_TAG, it's private for some reason
-                        tag = "androidx.compose.foundation.text.inlineContent"
+                patternAnnotation.inlineContent?.let { inlineContent ->
+                    inlineContentMap[matchedString] = inlineContent(matchedString)
+                    allAnnotations.add(
+                        AnnotatedString.Range(
+                            item = StringAnnotation(matchedString),
+                            start = start,
+                            end = end,
+                            // Internal string in Compose INLINE_CONTENT_TAG, it's private for some reason
+                            tag = "androidx.compose.foundation.text.inlineContent"
+                        )
                     )
-                )
+                }
             }
         }
     }

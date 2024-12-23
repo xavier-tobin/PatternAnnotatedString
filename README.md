@@ -1,13 +1,18 @@
 # PatternAnnotatedString
 
-`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but the current APIs
-are only useful if you know the text you're styling when you're coding.
+`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but it is designed
+for styling fixed text, and is unsuitable for styling dynamic or user-generated text.
 
-This library solves the problem of styling user-generated or dynamic text. Simply map patterns ->
-styles, and then use them to generate an `AnnotatedString`.
+This library solves this problem by allowing you to create rules (or pattern annotations) that map
+a given pattern to text styles, and then use these rules to generate an `AnnotatedString` from any
+String.
 
-- [x] 📝 Alternative to `buildAnnotatedString` for generating AnnotatedString
-- [x] 📎 Easy clickable and hyperlink text styling
+----
+
+### Features
+
+- [x] 📝 Flexible alternative to `buildAnnotatedString` for generating `AnnotatedString`s
+- [x] 📎 Easily create clickable links & text
 - [x] 🚀 Respects Compose lifecycle with performance options
 - [x] 📜 Simple, highly flexible API
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
@@ -33,7 +38,7 @@ maintained library after I've done the following:
 The library has a very simple API and in most cases you can generate a styled `AnnotatedString` with
 just a few lines of code. All you have to do is:
 
-1. Create PatternAnnotation/s that map patterns to text styles:
+1. Create a PatternAnnotation, which maps a given pattern to some text styles:
     ```kotlin
     val italicsMarkdown = basicPatternAnnotation(
         pattern = "_.*?_",
@@ -41,12 +46,13 @@ just a few lines of code. All you have to do is:
     )
     ```
 
-2. Use `String.annotatedWith(patternAnnotation/s)` in a Composable to get an AnnotatedString:
+2. Use `.annotatedWith()` in a Composable - it returns an AnnotatedString with all your styles
+   applied:
     ```kotlin
     val annotatedString = "I love _italic_ text!".annotatedWith(italicsMarkdown)
     ```
 
-3. Use the result in a Composable:
+3. Use the result in any Composable that accepts an `AnnotatedString`:
     ```kotlin
     Text(text = annotatedString)
     ```
@@ -56,10 +62,11 @@ just a few lines of code. All you have to do is:
 
 For basic text styling, the `AnnotatedString` returned by `annotatedWith()` does the job. However,
 `PatternAnnotatedString` supports some features that `AnnotatedString` does not, most notably
-paragraph backgrounds and dynamic inline content. To use these extra features, you can use
-`patternAnnotatedString()` instead of `annotatedWith()`, which returns an `AnnotatedString` _and_
-the extra data to render paragraph backgrounds and inline content. See the examples below for
-more information.
+paragraph backgrounds and dynamic inline content.
+
+To use these extra features, you can use `patternAnnotatedString()` instead of `annotatedWith()`,
+which returns an `AnnotatedString` _and_ the extra data to render paragraph backgrounds and inline
+content. See the examples below for more information.
 
 # Examples
 
@@ -372,23 +379,32 @@ several of the above examples:
 @Composable
 fun CombinedExample() {
 
-    val userComment = "Thanks @xavier, this is cool!" +
-            "I love _italics_ and would like to give you an apple to say thanks :)"
+    val userComment = "Thanks @xavier, this is cool! " +
+            "I also _love_ italics - and I'll be sure to check out Bundled Notes. " +
+            "Coincidentally, I had an Apple and a strawberry today." +
+            "(I'll star this repository!)"
 
     val styledComment = userComment.patternAnnotatedString(
-        patternAnnotations = listOf(usernameAnnotation, italics, redFruit)
+        patternAnnotations = listOf(
+            usernameAnnotation,
+            italics,
+            redFruit,
+            linkAnnotation,
+            rightAlignedAnnotation
+        )
     )
 
     Text(
         text = styledComment.annotatedString,
         inlineContent = styledComment.inlineContentMap
     )
+
 }
 ```
 
 ###### Result:
 
-![Combined example](images/mixed_example.png)
+![Combined example](images/combined_example.png)
 
 # More to come
 

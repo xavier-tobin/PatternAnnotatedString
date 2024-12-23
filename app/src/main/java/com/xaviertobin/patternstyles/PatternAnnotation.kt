@@ -41,41 +41,16 @@ data class MatchDetails(
     val group: String?
 )
 
-//internal fun buildComplexPatternAnnotation(
-//    pattern: String,
-//    caseSensitive: Boolean = false,
-//    literalPattern: Boolean = false,
-//    spanStyle: SpanStyle? = null,
-//    paragraphStyle: ParagraphStyle? = null,
-//    inlineContentTag: String? = null,
-//    drawParagraphBackground: OnDrawBackground? = null,
-//    inlineContent: InlineContentFunction? = null,
-//    linkAnnotationPlan: LinkAnnotationPlan? = null
-//): PatternAnnotation {
-//    return PatternAnnotation(
-//        pattern = Pattern.compile(
-//            pattern,
-//            (if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE) or (if (literalPattern) Pattern.LITERAL else 0)
-//        ),
-//        spanStyle = if (spanStyle != null) {
-//            { spanStyle }
-//        } else null,
-//        paragraphStyle = if (paragraphStyle != null) {
-//            { paragraphStyle }
-//        } else null,
-//        inlineContentTag = inlineContentTag,
-//        drawParagraphBackground = drawParagraphBackground,
-//        inlineContent = inlineContent,
-//        linkAnnotationPlan = linkAnnotationPlan
-//    )
-//}
-
-
-fun basicPatternAnnotation(
+internal fun buildPatternAnnotation(
     pattern: String,
-    literalPattern: Boolean = false,
     caseSensitive: Boolean = false,
+    literalPattern: Boolean = false,
     spanStyle: SpanStyle? = null,
+    paragraphStyle: ParagraphStyle? = null,
+    inlineContentTag: String? = null,
+    drawParagraphBackground: OnDrawBackground? = null,
+    inlineContent: InlineContentFunction? = null,
+    linkAnnotationPlan: LinkAnnotationPlan? = null
 ): PatternAnnotation {
     return PatternAnnotation(
         pattern = Pattern.compile(
@@ -85,19 +60,39 @@ fun basicPatternAnnotation(
         spanStyle = if (spanStyle != null) {
             { spanStyle }
         } else null,
+        paragraphStyle = if (paragraphStyle != null) {
+            { paragraphStyle }
+        } else null,
+        inlineContentTag = inlineContentTag,
+        drawParagraphBackground = drawParagraphBackground,
+        inlineContent = inlineContent,
+        linkAnnotationPlan = linkAnnotationPlan
     )
 }
+
+
+fun basicPatternAnnotation(
+    pattern: String,
+    literalPattern: Boolean = false,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = null,
+) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    literalPattern = literalPattern,
+    spanStyle = spanStyle
+)
+
 
 fun inlineContentPatternAnnotation(
     pattern: String,
     caseSensitive: Boolean = false,
     inlineContent: InlineContentFunction,
-): PatternAnnotation {
-    return PatternAnnotation(
-        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
-        inlineContent = inlineContent
-    )
-}
+) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    inlineContent = inlineContent
+)
 
 fun paragraphPatternAnnotation(
     pattern: String,
@@ -105,18 +100,13 @@ fun paragraphPatternAnnotation(
     spanStyle: SpanStyle? = null,
     paragraphStyle: ParagraphStyle? = null,
     onDrawParagraphBackground: OnDrawBackground? = null,
-): PatternAnnotation {
-    return PatternAnnotation(
-        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
-        spanStyle = if (spanStyle != null) {
-            { spanStyle }
-        } else null,
-        paragraphStyle = if (paragraphStyle != null) {
-            { paragraphStyle }
-        } else null,
-        drawParagraphBackground = onDrawParagraphBackground
-    )
-}
+) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    paragraphStyle = paragraphStyle,
+    drawParagraphBackground = onDrawParagraphBackground
+)
 
 fun linkPatternAnnotation(
     pattern: String,
@@ -126,41 +116,55 @@ fun linkPatternAnnotation(
     focusedStyle: SpanStyle? = null,
     hoveredStyle: SpanStyle? = null,
     pressedStyle: SpanStyle? = null
-): PatternAnnotation {
-    return PatternAnnotation(
-        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
-        spanStyle = if (spanStyle != null) {
-            { spanStyle }
-        } else null,
-        linkAnnotationPlan = LinkAnnotationPlan(
-            urlTagHandler = url,
-            focusedStyle = focusedStyle,
-            hoveredStyle = hoveredStyle,
-            pressedStyle = pressedStyle
-        )
+) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    linkAnnotationPlan = LinkAnnotationPlan(
+        urlTagHandler = url,
+        focusedStyle = focusedStyle,
+        hoveredStyle = hoveredStyle,
+        pressedStyle = pressedStyle
     )
-}
+)
+
+fun linkPatternAnnotation(
+    pattern: String,
+    caseSensitive: Boolean = false,
+    spanStyle: SpanStyle? = SpanStyle(textDecoration = TextDecoration.Underline),
+    url: String,
+    focusedStyle: SpanStyle? = null,
+    hoveredStyle: SpanStyle? = null,
+    pressedStyle: SpanStyle? = null
+) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    linkAnnotationPlan = LinkAnnotationPlan(
+        urlTagHandler = { url },
+        focusedStyle = focusedStyle,
+        hoveredStyle = hoveredStyle,
+        pressedStyle = pressedStyle
+    )
+)
 
 fun clickablePatternAnnotation(
     pattern: String,
     caseSensitive: Boolean = false,
     spanStyle: SpanStyle? = SpanStyle(textDecoration = TextDecoration.Underline),
-    onClick : (matchingText: String) -> Unit,
+    onClick: (matchingText: String) -> Unit,
     focusedStyle: SpanStyle? = null,
     hoveredStyle: SpanStyle? = null,
     pressedStyle: SpanStyle? = null
-): PatternAnnotation {
-    return PatternAnnotation(
-        pattern = Pattern.compile(pattern, if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE),
-        spanStyle = if (spanStyle != null) {
-            { spanStyle }
-        } else null,
-        linkAnnotationPlan = LinkAnnotationPlan(
-            urlTagHandler = { it },
-            onClick = onClick,
-            focusedStyle = focusedStyle,
-            hoveredStyle = hoveredStyle,
-            pressedStyle = pressedStyle
-        )
+) = buildPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    spanStyle = spanStyle,
+    linkAnnotationPlan = LinkAnnotationPlan(
+        urlTagHandler = { it },
+        onClick = onClick,
+        focusedStyle = focusedStyle,
+        hoveredStyle = hoveredStyle,
+        pressedStyle = pressedStyle
     )
-}
+)

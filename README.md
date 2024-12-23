@@ -1,14 +1,14 @@
 # PatternAnnotatedString
 
-> _Built to render markdown previews and for highlighting global search results
-in [Bundled Notes](https://bundlednotes.com)._
-
 `buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but it is designed
 for styling fixed text, and is unsuitable for styling dynamic or user-generated text.
 
-This library solves this problem by allowing you to create re-usable rules (a.k.a. pattern 
-annotations) that map a given pattern to text styles, and then use these rules to generate an 
+This library solves this problem by allowing you to create re-usable rules (a.k.a. pattern
+annotations) that map a given pattern to text styles, and then use these rules to generate an
 `AnnotatedString` from any String.
+
+> _Built to render markdown previews and for highlighting global search results
+in [Bundled Notes](https://bundlednotes.com)._
 
 ----
 
@@ -23,8 +23,6 @@ annotations) that map a given pattern to text styles, and then use these rules t
 - [x] 📚 Can be used to render markdown, or style text based on custom syntax
 - [x] 🎨 Supports multiple pattern annotations on a single string
 - [x] ⚖️ Extremely lightweight - no third party dependencies
-
-
 
 ## Readiness checklist
 

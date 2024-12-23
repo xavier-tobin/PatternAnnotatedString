@@ -18,6 +18,8 @@ String.
 - [x] 📦 Out-of-the-box support for custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
 - [x] 📚 Can be used to render markdown, or style text based on custom syntax
+- [x] 🎨 Supports multiple pattern annotations on a single string
+- [x] ⚖️ Extremely lightweight - no third party dependencies
 
 > _Built to render markdown previews and for highlighting global search results
 in [Bundled Notes](https://bundlednotes.com)._
@@ -110,7 +112,7 @@ the website.
 ```kotlin
 val linkAnnotation = linkPatternAnnotation(
     pattern = "Bundled Notes",
-    url = { "https://bundlednotes.com" }
+    url = "https://bundlednotes.com"
 )
 
 @Composable

@@ -99,7 +99,7 @@ fun BasicExample() {
  */
 val linkAnnotation = linkPatternAnnotation(
     pattern = "Bundled Notes",
-    url = { "https://bundlednotes.com" }
+    url = "https://bundlednotes.com"
 )
 
 @Preview
@@ -118,18 +118,17 @@ fun BasicLinkExample() {
 fun BasicClickExample() {
 
     var clickCount by remember { mutableIntStateOf(0) }
-    val clickCountText = "I have been clicked $clickCount times"
 
     val clickableAnnotation = remember {
         clickablePatternAnnotation(
-            pattern = "e",
+            pattern = "banana",
             onClick = { clickCount++ }
         )
     }
 
     PreviewLayout {
         Text(
-            text = clickCountText.annotatedWith(clickableAnnotation)
+            text = "The word banana has been clicked $clickCount times".annotatedWith(clickableAnnotation)
         )
     }
 }

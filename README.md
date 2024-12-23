@@ -49,7 +49,7 @@ just a few lines of code. All you have to do is:
 2. Use `.annotatedWith()` in a Composable - it returns an AnnotatedString with all your styles
    applied:
     ```kotlin
-    val annotatedString = "I love _italic_ text!".annotatedWith(italicsMarkdown)
+    val annotatedString = "I _love_ italic text!".annotatedWith(italicsMarkdown)
     ```
 
 3. Use the result in any Composable that accepts an `AnnotatedString`:
@@ -60,8 +60,7 @@ just a few lines of code. All you have to do is:
 
 > [!TIP]
 > `pattern` can be any valid regex pattern, or an exact matching string. The above example (
-`"_.*?_"`) matches against italic markdown syntax. Anything that matches the pattern will have the
-> styles applied.
+`_.*?_`) matches against italics markdown syntax.
 
 # Advanced usage
 

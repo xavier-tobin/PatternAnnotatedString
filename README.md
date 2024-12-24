@@ -407,9 +407,9 @@ fun CombinedExample() {
 
 # How does it work?
 
-`PatternAnnotation` is a simple data class which holds pattern and styles/handlers. The builder
-classes, like `basicPatternAnnotation()` and `linkPatternAnnotation()`, make creating a pattern
-annotation easy, with sensible defaults.
+`PatternAnnotation` is a simple data class which holds pattern and styles/handlers -
+`basicPatternAnnotation()` and `linkPatternAnnotation()`, make creating pattern annotations easy,
+with sensible defaults.
 
 The logic for generating an `AnnotatedString` is quite
 simple - [it's about 100 lines](app/src/main/java/com/xaviertobin/patternannotatedstring/CalculatePatternAnnotatedString.kt).

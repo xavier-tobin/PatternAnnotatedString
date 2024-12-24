@@ -107,9 +107,9 @@ fun BasicExample() {
 
 > For adding Clickable hyperlinks to text
 
-Use `linkPatternAnnotation()` to create a pattern annotation, and pass a handler that returns the
-URL to open. The following example will turn all instances of "Bundled Notes" into a hyperlink to
-the website.
+Use `linkPatternAnnotation()` to create a pattern annotation, and pass either a static URL or
+handler that returns the URL. The following example will turn all instances of "Bundled Notes" into
+a hyperlink to the website.
 
 ```kotlin
 val linkAnnotation = linkPatternAnnotation(
@@ -125,8 +125,8 @@ fun LinksExample() {
 }
 ```
 
-You could also create an auto-linking pattern annotation that matches URLs by passing a handler to
-`linkPatternAnnotation()` that returns the URL to open, with the matching text as a parameter:
+You could also create an annotation pattern that made any detected link clickable one. Simply pass a
+handler to`linkPatternAnnotation()` that returns the matching text:
 
 ```kotlin
 val autoLinkAnnotation = linkPatternAnnotation(
@@ -135,7 +135,7 @@ val autoLinkAnnotation = linkPatternAnnotation(
 )
 ```
 
-Or an annotation that matches against emails and creates a mailto link:
+Or an annotation that turns all email addresses into clickable `mailto` links:
 
 ```kotlin
 val emailMailToLinkAnnotation = linkPatternAnnotation(
@@ -435,7 +435,7 @@ keep in mind:
 
 2. If you are using many pattern annotations, complex styles or long text, consider using the
    `PerformanceStrategy.Performant` option when calling `richAnnotatedWith()` or `annotatedWith()`.
-   This will style the text in a background thread, which can lead to a slight delay in the styles 
+   This will style the text in a background thread, which can lead to a slight delay in the styles
    becoming visible.
 
 # How does it work?

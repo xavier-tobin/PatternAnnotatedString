@@ -38,9 +38,6 @@ enum class PerformanceStrategy {
     Immediate,
 }
 
-/**
- * Uses a list of pattern annotations to generate an AnnotationSpan
- */
 internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: String): PatternAnnotatedString {
     val allAnnotations = mutableListOf<AnnotatedString.Range<out AnnotatedString.Annotation>>()
     val backgrounds = mutableListOf<ParagraphBackgroundAnnotation>()

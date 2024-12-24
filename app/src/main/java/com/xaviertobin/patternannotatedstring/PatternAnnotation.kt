@@ -10,9 +10,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
 import java.util.regex.Pattern
 
-/**
- * Describes a strategy to style a given pattern.
- */
+
 data class PatternAnnotation(
     val pattern: Pattern,
     val spanStyle: ((details: MatchDetails) -> SpanStyle)? = null,
@@ -83,7 +81,6 @@ fun basicPatternAnnotation(
     literalPattern = literalPattern,
     spanStyle = spanStyle
 )
-
 
 fun inlineContentPatternAnnotation(
     pattern: String,

@@ -1,6 +1,6 @@
 # PatternAnnotatedString
 
-`buildAnnotatedString` is a powerful tool for creating styling text in Jetpack Compose, but it is 
+`buildAnnotatedString` is a powerful tool for creating styling text in Jetpack Compose, but it is
 designed for styling fixed text, and is unsuitable for styling dynamic or user-generated text.
 
 This library solves this problem by allowing you to create re-usable rules (a.k.a. pattern
@@ -68,7 +68,7 @@ For basic text styling, the `AnnotatedString` returned by `annotatedWith()` does
 `PatternAnnotatedString` supports some features that `AnnotatedString` does not, most notably
 paragraph backgrounds and dynamic inline content.
 
-To use these extra features, you can use `patternAnnotatedString()` instead of `annotatedWith()`,
+To use these extra features, you can use `richAnnotatedWith()` instead of `annotatedWith()`,
 which returns an `AnnotatedString` _and_ the extra data to render paragraph backgrounds and inline
 content. See the examples below for more information.
 
@@ -207,7 +207,7 @@ fun SearchQueryHighlightedText(val searchQuery: String) {
 > 1. Use `remember` to cache the `PatternAnnotation` with the dynamic pattern. This prevents the
      pattern from having to be instantiated and rebuilt on every recomposition.
 > 2. When immediacy is not crucial, use the `PerformanceStrategy.Performant` option when calling
-     `annotatedWith()` or `patternAnnotatedString()`. This means that text is styled in a
+     `annotatedWith()` or `richAnnotatedWith()`. This means that text is styled in a
      background thread and leads to a *slight* delay in the styles becoming visible.
 
 ### Inline content
@@ -217,7 +217,7 @@ fun SearchQueryHighlightedText(val searchQuery: String) {
 Compose includes support for inline text content in `buildAnnotatedString` and the `Text`
 Composable, but it can be cumbersome to use - and very difficult with dynamic text.
 
-`String.patternAnnotatedString()` can easily build and return an
+`String.richAnnotatedWith()` can easily build and return an
 `inlineContentMap` that the `Text()` composable can use. See the example below, where @mentions are
 rendered as user pills:
 
@@ -236,7 +236,7 @@ val usernameAnnotation = inlineContentPatternAnnotation(
 fun SimpleInlineExample() {
 
     val styledComment = "Thanks @xavier, this is cool!"
-        .patternAnnotatedString(usernameAnnotation)
+        .richAnnotatedWith(usernameAnnotation)
 
     Text(
         text = styledComment.annotatedString,
@@ -274,7 +274,7 @@ val rightAlignedBrackets = paragraphPatternAnnotation(
 
 @Composable
 fun ParagraphAlignmentExample() {
-    val annotated = "I am left aligned\n(And I am right aligned)".patternAnnotatedString(
+    val annotated = "I am left aligned\n(And I am right aligned)".richAnnotatedWith(
         patternAnnotation = rightAlignedBrackets
     )
 
@@ -301,7 +301,7 @@ __Paragraph background styling steps:__
 
 1. Create a pattern annotation using `paragraphPatternAnnotation()` with your desired paragraph
    styles/pattern.
-2. Use `String.getPatternAnnotatedString()` to get a `PatternAnnotatedString` which includes
+2. Use `String.richAnnotatedWith()` to get a `PatternAnnotatedString` which includes
    background annotations.
 3. Call `rememberParagraphBackgrounds()` and pass the the background annotations.
 4. Pass the `annotatedString` and the result of `rememberParagraphBackgrounds` to a `Text`
@@ -335,11 +335,11 @@ val codeBlockAnnotation = paragraphPatternAnnotation(
 @Composable
 fun ParagraphStyling() {
 
-    val annotated = multiParagraphText.getPatternAnnotatedString(
+    val annotated = multiParagraphText.richAnnotatedWith(
         patternAnnotation = codeBlockAnnotation
     )
 
-    val backgroundsResult = useParagraphBackgrounds(
+    val backgroundsResult = rememberParagraphBackgrounds(
         paragraphBackgroundAnnotations = annotated.paragraphBackgroundAnnotations
     )
 
@@ -369,7 +369,7 @@ fun ParagraphStyling() {
 ### Multiple/combined annotations
 
 You are not limited to one pattern annotation (or type of pattern annotation) when styling a
-string - both `annotatedWith()` and `patternAnnotatedString()` can take a list of annotations.
+string - both `annotatedWith()` and `richAnnotatedWith()` can take a list of annotations.
 
 This makes it easy to create rich, custom text styles in only a few lines of code. Here, we combine
 several of the above examples:
@@ -383,7 +383,7 @@ fun CombinedExample() {
             "Coincidentally, I had an Apple and a strawberry today." +
             "(I'll star this repository!)"
 
-    val styledComment = userComment.patternAnnotatedString(
+    val styledComment = userComment.richAnnotatedWith(
         patternAnnotations = listOf(
             usernameAnnotation,
             italics,
@@ -404,6 +404,34 @@ fun CombinedExample() {
 ###### Result:
 
 ![Combined example](images/combined_example.png)
+
+# How does it work?
+
+`PatternAnnotation` is a simple data class which holds pattern and styles/handlers. The builder
+classes, like `basicPatternAnnotation()` and `linkPatternAnnotation()`, make creating a pattern
+annotation easy, with sensible defaults.
+
+The logic for generating an `AnnotatedString` is quite simple. You can see
+it [here](app/src/main/java/com/xaviertobin/patternannotatedstring/CalculatePatternAnnotatedString.kt) -
+it is ~100 lines. But, TL;DR:
+
+1. When you call `annotatedWith()` or `richAnnotatedWith()`, the library goes through each pattern
+   and generates a list of `AnnotatedString.Range` objects with the styles/handlers applied, like
+   so: `rangedAnnotations.add(AnnotatedString.Range(style, start, end))`. It also tracks a list of
+   discovered inline content and paragraph backgrounds.
+
+2. After all patterns are processed and the list of `AnnotatedString.Range`s is ready, the library
+   builds an annotated string like so:
+   `AnnotatedString(text = text, annotations = rangedAnnotations)`.
+
+3. That's it! The `AnnotatedString` is returned, along with any inline content and paragraph
+   backgrounds if you use `richAnnotatedWith()`.
+
+The rest of the library is comprised of:
+1. Composable functions for creating pattern annotations and applying them to text.
+2. Helper functions to make creating pattern annotations easier, e.g. `basicPatternAnnotation()`.
+3. Helper functions to make rendering paragraph backgrounds easier, e.g. `rememberParagraphBackgrounds()`.
+
 
 # More to come
 

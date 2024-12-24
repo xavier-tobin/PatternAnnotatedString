@@ -411,13 +411,13 @@ fun CombinedExample() {
 classes, like `basicPatternAnnotation()` and `linkPatternAnnotation()`, make creating a pattern
 annotation easy, with sensible defaults.
 
-The logic for generating an `AnnotatedString` is quite simple. You can see
-it [here](app/src/main/java/com/xaviertobin/patternannotatedstring/CalculatePatternAnnotatedString.kt) -
-it is ~100 lines. But, TL;DR:
+The logic for generating an `AnnotatedString` is quite
+simple - [it's about 100 lines](app/src/main/java/com/xaviertobin/patternannotatedstring/CalculatePatternAnnotatedString.kt).
+**But, TL;DR:**
 
-1. When you call `annotatedWith()` or `richAnnotatedWith()`, the library goes through each pattern
-   and generates a list of `AnnotatedString.Range` objects with the styles/handlers applied, like
-   so: `rangedAnnotations.add(AnnotatedString.Range(style, start, end))`. It also tracks a list of
+1. The library goes through each pattern and generates a list of `AnnotatedString.Range` objects
+   with the styles/handlers applied, like so:
+   `rangedAnnotations.add(AnnotatedString.Range(style, start, end))`. It also tracks a list of
    discovered inline content and paragraph backgrounds.
 
 2. After all patterns are processed and the list of `AnnotatedString.Range`s is ready, the library
@@ -427,11 +427,12 @@ it is ~100 lines. But, TL;DR:
 3. That's it! The `AnnotatedString` is returned, along with any inline content and paragraph
    backgrounds if you use `richAnnotatedWith()`.
 
-The rest of the library is comprised of:
+**The rest of the library is comprised of:**
+
 1. Composable functions for creating pattern annotations and applying them to text.
 2. Helper functions to make creating pattern annotations easier, e.g. `basicPatternAnnotation()`.
-3. Helper functions to make rendering paragraph backgrounds easier, e.g. `rememberParagraphBackgrounds()`.
-
+3. Helper functions to make rendering paragraph backgrounds easier, e.g.
+   `rememberParagraphBackgrounds()`.
 
 # More to come
 

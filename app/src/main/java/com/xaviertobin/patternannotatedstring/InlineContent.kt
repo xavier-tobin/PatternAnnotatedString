@@ -9,8 +9,8 @@ import androidx.compose.ui.unit.em
 
 
 fun inlineTextContent(
-    width: TextUnit = 1.em,
-    height: TextUnit = 1.em,
+    width: TextUnit,
+    height: TextUnit,
     placeholderVerticalAlign: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Center,
     content: @Composable (String) -> Unit
 ): InlineTextContent {

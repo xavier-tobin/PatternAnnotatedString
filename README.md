@@ -125,6 +125,25 @@ fun LinksExample() {
 }
 ```
 
+You could also create an auto-linking pattern annotation that matches URLs by passing a handler to
+`linkPatternAnnotation()` that returns the URL to open, with the matching text as a parameter:
+
+```kotlin
+val autoLinkAnnotation = linkPatternAnnotation(
+    pattern = "https?://[^ ]+",
+    url = { it }
+)
+```
+
+Or an annotation that matches against emails and creates a mailto link:
+
+```kotlin
+val emailMailToLinkAnnotation = linkPatternAnnotation(
+    pattern = "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}",
+    url = { "mailto:$it" }
+)
+```
+
 ###### Result:
 
 ![Hyperlinks Example](images/link_example.webp)
@@ -251,8 +270,9 @@ fun SimpleInlineExample() {
 
 > [!TIP]
 > If you need to render inline content using, say, data fetched from an API, you can generate your
-> pattern annotation in the Composable. Ensure you use `remember` with a key, such as in the
-> search highlighting example, to avoid rebuilding the pattern on every recomposition.
+> pattern annotation in the Composable. Ensure you use the `remember` version of
+`inlineContentPatternAnnotation`, such as in the search highlighting example, to avoid rebuilding
+> the pattern on every recomposition.
 
 ### Basic paragraph styling
 
@@ -299,13 +319,12 @@ paragraph backgrounds easy to implement.
 
 __Paragraph background styling steps:__
 
-1. Create a pattern annotation using `paragraphPatternAnnotation()` with your desired paragraph
-   styles/pattern.
-2. Use `String.richAnnotatedWith()` to get a `PatternAnnotatedString` which includes
+1. Create a pattern annotation using `paragraphPatternAnnotation()`.
+2. Use `String.richAnnotatedWith()` to get a `PatternAnnotatedString`, which includes
    background annotations.
-3. Call `rememberParagraphBackgrounds()` and pass the the background annotations.
-4. Pass the `annotatedString` and the result of `rememberParagraphBackgrounds` to a `Text`
-5. composable, using the `drawParagraphBackgrounds` modifier and the `onTextLayout` parameter.
+3. Pass the resulting background annotations to `rememberParagraphBackgrounds()`.
+4. Pass both the `annotatedString` and the result of `rememberParagraphBackgrounds` to a `Text`
+   composable, using the `drawParagraphBackgrounds` modifier and the `onTextLayout` parameter.
 
 In this example, we create a pattern annotation that draws a grey background around a block of
 code:
@@ -404,6 +423,20 @@ fun CombinedExample() {
 ###### Result:
 
 ![Combined example](images/combined_example.png)
+
+# Performance
+
+The library is designed to be performant, but there are some important considerations and tips to
+keep in mind:
+
+1. Create your pattern annotations outside of the Composable function where possible - if your
+   annotations rely on dynamic data, use the `remember-------PatternAnnotation️` version of the
+   pattern annotation functions to cache them.
+
+2. If you are using many pattern annotations, complex styles or long text, consider using the
+   `PerformanceStrategy.Performant` option when calling `richAnnotatedWith()` or `annotatedWith()`.
+   This will style the text in a background thread, which can lead to a slight delay in the styles 
+   becoming visible.
 
 # How does it work?
 

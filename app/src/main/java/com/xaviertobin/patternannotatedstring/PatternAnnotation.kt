@@ -55,7 +55,7 @@ internal fun buildPatternAnnotation(
     return PatternAnnotation(
         pattern = Pattern.compile(
             pattern,
-            (if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE) or (if (literalPattern) Pattern.LITERAL else 0)
+            (Pattern.MULTILINE or if (caseSensitive) 0 else Pattern.CASE_INSENSITIVE) or (if (literalPattern) Pattern.LITERAL else 0)
         ),
         spanStyle = if (spanStyle != null) {
             { spanStyle }

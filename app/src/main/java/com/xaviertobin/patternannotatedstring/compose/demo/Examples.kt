@@ -21,42 +21,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextIndent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import com.xaviertobin.patternannotatedstring.PerformanceStrategy
 import com.xaviertobin.patternannotatedstring.annotatedWith
-import com.xaviertobin.patternannotatedstring.basicPatternAnnotation
 import com.xaviertobin.patternannotatedstring.drawParagraphBackgrounds
-import com.xaviertobin.patternannotatedstring.inlineContentPatternAnnotation
-import com.xaviertobin.patternannotatedstring.inlineTextContent
-import com.xaviertobin.patternannotatedstring.linkPatternAnnotation
-import com.xaviertobin.patternannotatedstring.paragraphPatternAnnotation
-import com.xaviertobin.patternannotatedstring.richAnnotatedWith
 import com.xaviertobin.patternannotatedstring.rememberBasicPatternAnnotation
 import com.xaviertobin.patternannotatedstring.rememberClickablePatternAnnotation
 import com.xaviertobin.patternannotatedstring.rememberParagraphBackgrounds
+import com.xaviertobin.patternannotatedstring.richAnnotatedWith
 
 
 /**
  * # Basic italics example
  */
-
-val italicsMarkdown = basicPatternAnnotation(
-    pattern = "_.*?_",
-    spanStyle = SpanStyle(fontStyle = FontStyle.Italic),
-)
 
 @Preview
 @Composable
@@ -74,11 +55,6 @@ fun BasicItalicsExample() {
  * # Basic styling
  */
 
-val redFruit = basicPatternAnnotation(
-    pattern = "(\\w*berry)|(\\w{0,}apple)",
-    spanStyle = SpanStyle(color = Color.Red, fontWeight = FontWeight.Bold)
-)
-
 @Preview
 @Composable
 fun BasicExample() {
@@ -91,17 +67,14 @@ fun BasicExample() {
     }
 }
 
+
 /**
- * # Links & hyperlinks
+ * # Links, clickable and hyperlinks
  */
-val linkAnnotation = linkPatternAnnotation(
-    pattern = "Bundled Notes",
-    url = "https://bundlednotes.com"
-)
 
 @Preview
 @Composable
-fun BasicLinkExample() {
+fun BasicHyperlink() {
     PreviewLayout {
         Text(
             text = "Check out the Bundled Notes website!".annotatedWith(linkAnnotation)
@@ -109,11 +82,31 @@ fun BasicLinkExample() {
     }
 }
 
+@Preview
+@Composable
+fun AutoLinks() {
+    PreviewLayout {
+        Text(
+            text = "Check out https://bundlednotes.com on the Play Store: https://play.google.com/store/apps/details?id=com.xaviertobin.noted".annotatedWith(autoLinkAnnotation)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun MailToLinks() {
+    PreviewLayout {
+        Text(
+            text = "You can email support here: support@bundlednotes.com".annotatedWith(
+                emailMailToLinkAnnotation
+            )
+        )
+    }
+}
 
 @Preview
 @Composable
 fun BasicClickExample() {
-
     var clickCount by remember { mutableIntStateOf(0) }
 
     val clickableAnnotation = rememberClickablePatternAnnotation(
@@ -130,7 +123,6 @@ fun BasicClickExample() {
     }
 }
 
-
 /**
  * ## Search text highlighting
  */
@@ -144,7 +136,6 @@ const val TEXT_TO_SEARCH = "Lorem ipsum dolor sit amet, consectetur adipiscing e
 @Preview
 @Composable
 fun SearchTextHighlighting() {
-
     var searchQuery by remember { mutableStateOf("reprehenderit") }
 
     val highlightAnnotation = rememberBasicPatternAnnotation(
@@ -179,14 +170,6 @@ fun SearchTextHighlighting() {
  * ## Paragraph styling
  */
 
-
-val rightAlignedAnnotation = paragraphPatternAnnotation(
-    pattern = "\\(.+\\)",
-    paragraphStyle = ParagraphStyle(
-        textAlign = TextAlign.End
-    )
-)
-
 @Preview
 @Composable
 fun ParagraphAlignmentExample() {
@@ -201,51 +184,13 @@ fun ParagraphAlignmentExample() {
             modifier = Modifier.fillMaxWidth(),
         )
     }
-
 }
-
-
-val codeBlockAnnotation = paragraphPatternAnnotation(
-    pattern = "```[^` ][^`]*[^ ]?```",
-    spanStyle = SpanStyle(
-        fontFamily = FontFamily.Monospace,
-    ),
-    paragraphStyle = ParagraphStyle(
-        // The code block looks better with these paragraph settings
-        lineHeight = 2.em,
-        lineHeightStyle = LineHeightStyle(
-            LineHeightStyle.Alignment.Proportional,
-            LineHeightStyle.Trim.LastLineBottom
-        ),
-        textIndent = TextIndent(
-            firstLine = 10.sp,
-            restLine = 10.sp
-        ),
-    ),
-    onDrawParagraphBackground = { rect ->
-        // You can draw pretty much anything here, but...
-        // This runs on the main thread, so keep it simple
-        val fullWidthRect = rect.copy(
-            right = size.width
-        )
-        drawRoundRect(
-            color = Color.LightGray,
-            topLeft = fullWidthRect.topLeft,
-            size = fullWidthRect.size,
-            cornerRadius = CornerRadius(
-                10.dp.toPx(), 10.dp.toPx()
-            )
-        )
-    }
-)
-
-const val multiParagraphText = "```\ncode();\n```\n\nNormal text"
 
 @Preview
 @Composable
 fun ParagraphStyling() {
 
-    val annotated = multiParagraphText.richAnnotatedWith(
+    val annotated = "```\ncode();\n```\n\nNormal text".richAnnotatedWith(
         patternAnnotation = codeBlockAnnotation
     )
 
@@ -272,16 +217,6 @@ fun ParagraphStyling() {
 /**
  * ## Inline content
  */
-
-val usernameAnnotation = inlineContentPatternAnnotation(
-    pattern = "@[A-Za-z0-9_]+",
-    inlineContent = { matchedText ->
-        inlineTextContent(width = 6.8.em, height = 1.4.em) {
-            // You can use any composable here, but stick within the above bounds^
-            Pill(usernameToNameMap[matchedText] ?: matchedText)
-        }
-    }
-)
 
 val usernameToNameMap = mapOf(
     "@xavier" to "Xavier Tobin",
@@ -324,11 +259,6 @@ fun Pill(text: String) {
  * ## Combined examples
  */
 
-val italics = basicPatternAnnotation(
-    pattern = "_.*?_",
-    spanStyle = SpanStyle(fontStyle = FontStyle.Italic)
-)
-
 @Preview
 @Composable
 fun CombinedExample() {
@@ -341,7 +271,7 @@ fun CombinedExample() {
     val styledComment = userComment.richAnnotatedWith(
         patternAnnotations = listOf(
             usernameAnnotation,
-            italics,
+            italicsMarkdown,
             redFruit,
             linkAnnotation,
             rightAlignedAnnotation
@@ -376,26 +306,3 @@ fun PreviewLayout(
 
 }
 
-
-//val quoteBlockStyle = paragraphPatternAnnotation(
-//    pattern = "(?<=^)(>.*\\n?)|(?<=\\n)(>.*\\n?)",
-//    spanStyle = SpanStyle(fontSize = 16.sp),
-//    paragraphStyle = ParagraphStyle(
-//        lineHeight = 2.em,
-//        lineBreak = LineBreak.Unspecified,
-//        textIndent = TextIndent(
-//            firstLine = 12.sp,
-//            restLine = 12.sp
-//        )
-//    ),
-//    drawParagraphBackground = { rect ->
-//        drawRoundRect(
-//            color = Color.LightGray,
-//            topLeft = rect.topLeft,
-//            size = Size(4.dp.toPx(), rect.height),
-//            cornerRadius = CornerRadius(
-//                10.dp.toPx(), 10.dp.toPx()
-//            )
-//        )
-//    }
-//)

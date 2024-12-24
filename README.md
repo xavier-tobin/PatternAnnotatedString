@@ -29,9 +29,9 @@ as a
 maintained library after I've done the following:
 
 - [ ] Wait until stable compose-bom includes latest StringAnnotation APIs
-- [ ] Add more examples to README
-- [ ] Add tests
+- [ ] Add more thorough tests
 - [ ] Work out how to release library via Maven/Gradle
+- [ ] Finalise README & API documentation
 
 # Basic usage
 

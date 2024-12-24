@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles
+package com.xaviertobin.patternannotatedstring
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

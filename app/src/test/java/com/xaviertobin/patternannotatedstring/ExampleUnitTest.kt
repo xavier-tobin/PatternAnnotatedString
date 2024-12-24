@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles
+package com.xaviertobin.patternannotatedstring
 
 import org.junit.Test
 

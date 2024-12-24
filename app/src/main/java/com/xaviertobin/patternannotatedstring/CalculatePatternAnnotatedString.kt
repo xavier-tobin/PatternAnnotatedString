@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles
+package com.xaviertobin.patternannotatedstring
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
@@ -154,7 +154,7 @@ internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: Strin
  * Also returns detected inline content to render custom views
  */
 @Composable
-fun String.patternAnnotatedString(
+fun String.richAnnotatedWith(
     patternAnnotations: List<PatternAnnotation>,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): PatternAnnotatedString {
@@ -186,7 +186,7 @@ fun String.patternAnnotatedString(
         if (!isImmediate) {
             launch(Dispatchers.Default) {
                 patternAnnotatedString = patternAnnotations
-                    .calculatePatternAnnotatedString(this@patternAnnotatedString)
+                    .calculatePatternAnnotatedString(this@richAnnotatedWith)
             }
         }
     }
@@ -195,11 +195,11 @@ fun String.patternAnnotatedString(
 }
 
 @Composable
-fun String.patternAnnotatedString(
+fun String.richAnnotatedWith(
     patternAnnotation: PatternAnnotation,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): PatternAnnotatedString {
-    return this.patternAnnotatedString(
+    return this.richAnnotatedWith(
         patternAnnotations = listOf(patternAnnotation),
         performanceStrategy = performanceStrategy
     )
@@ -210,7 +210,7 @@ fun String.annotatedWith(
     patternAnnotations: List<PatternAnnotation>,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): AnnotatedString {
-    return this.patternAnnotatedString(
+    return this.richAnnotatedWith(
         patternAnnotations = patternAnnotations,
         performanceStrategy = performanceStrategy
     ).annotatedString
@@ -221,7 +221,7 @@ fun String.annotatedWith(
     patternAnnotation: PatternAnnotation,
     performanceStrategy: PerformanceStrategy = PerformanceStrategy.Immediate
 ): AnnotatedString {
-    return this.patternAnnotatedString(
+    return this.richAnnotatedWith(
         patternAnnotations = listOf(patternAnnotation),
         performanceStrategy = performanceStrategy
     ).annotatedString

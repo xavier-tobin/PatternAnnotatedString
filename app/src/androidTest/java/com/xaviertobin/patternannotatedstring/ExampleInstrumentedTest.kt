@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles
+package com.xaviertobin.patternannotatedstring
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

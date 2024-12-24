@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles
+package com.xaviertobin.patternannotatedstring
 
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable

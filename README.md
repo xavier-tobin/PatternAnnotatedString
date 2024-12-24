@@ -1,7 +1,7 @@
 # PatternAnnotatedString
 
-`buildAnnotatedString` is a powerful tool for styling text in Jetpack Compose, but it is designed
-for styling fixed text, and is unsuitable for styling dynamic or user-generated text.
+`buildAnnotatedString` is a powerful tool for creating styling text in Jetpack Compose, but it is 
+designed for styling fixed text, and is unsuitable for styling dynamic or user-generated text.
 
 This library solves this problem by allowing you to create re-usable rules (a.k.a. pattern
 annotations) that map a given pattern to text styles, and then use these rules to generate an
@@ -16,7 +16,7 @@ in [Bundled Notes](https://bundlednotes.com)._
 
 - [x] 📝 Flexible alternative to `buildAnnotatedString`
 - [x] ⚖️ Extremely lightweight - no third party dependencies
-- [x] 🚀 Respects Compose lifecycle
+- [x] 🚀 Built to work with Compose lifecycle
 - [x] 📎 Easily add clickable links & text
 - [x] 📦 Supports custom paragraph backgrounds
 - [x] 🧩 Easily render custom inline content
@@ -139,8 +139,9 @@ fun LinksExample() {
 
 Creating a clickable portion of text is just as easy as creating a link or other styles. However,
 most of the time you will need to do something with state or context in `onClick`, and therefore
-you'll need to create it _in_ your Composable. This is okay, but make sure to wrap the creation
-of your pattern annotation in `remember` to avoid re-building it every recomposition.
+you'll need to create it _in_ your Composable. This is okay, but make sure to use the `remember`
+version of the annotation creation function, in this case `rememberClickablePatternAnnotation`, to
+avoid re-creating the pattern on every recomposition.
 
 ```kotlin
 fun BasicClickExample() {

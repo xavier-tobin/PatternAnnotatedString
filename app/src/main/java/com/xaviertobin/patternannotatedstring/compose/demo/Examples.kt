@@ -1,4 +1,4 @@
-package com.xaviertobin.patternstyles.compose.demo
+package com.xaviertobin.patternannotatedstring.compose.demo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,18 +35,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.xaviertobin.patternstyles.PerformanceStrategy
-import com.xaviertobin.patternstyles.annotatedWith
-import com.xaviertobin.patternstyles.basicPatternAnnotation
-import com.xaviertobin.patternstyles.drawParagraphBackgrounds
-import com.xaviertobin.patternstyles.inlineContentPatternAnnotation
-import com.xaviertobin.patternstyles.inlineTextContent
-import com.xaviertobin.patternstyles.linkPatternAnnotation
-import com.xaviertobin.patternstyles.paragraphPatternAnnotation
-import com.xaviertobin.patternstyles.patternAnnotatedString
-import com.xaviertobin.patternstyles.rememberBasicPatternAnnotation
-import com.xaviertobin.patternstyles.rememberClickablePatternAnnotation
-import com.xaviertobin.patternstyles.rememberParagraphBackgrounds
+import com.xaviertobin.patternannotatedstring.PerformanceStrategy
+import com.xaviertobin.patternannotatedstring.annotatedWith
+import com.xaviertobin.patternannotatedstring.basicPatternAnnotation
+import com.xaviertobin.patternannotatedstring.drawParagraphBackgrounds
+import com.xaviertobin.patternannotatedstring.inlineContentPatternAnnotation
+import com.xaviertobin.patternannotatedstring.inlineTextContent
+import com.xaviertobin.patternannotatedstring.linkPatternAnnotation
+import com.xaviertobin.patternannotatedstring.paragraphPatternAnnotation
+import com.xaviertobin.patternannotatedstring.richAnnotatedWith
+import com.xaviertobin.patternannotatedstring.rememberBasicPatternAnnotation
+import com.xaviertobin.patternannotatedstring.rememberClickablePatternAnnotation
+import com.xaviertobin.patternannotatedstring.rememberParagraphBackgrounds
 
 
 /**
@@ -191,7 +191,7 @@ val rightAlignedAnnotation = paragraphPatternAnnotation(
 @Composable
 fun ParagraphAlignmentExample() {
 
-    val annotated = "I am left aligned\n(And I am right aligned)".patternAnnotatedString(
+    val annotated = "I am left aligned\n(And I am right aligned)".richAnnotatedWith(
         patternAnnotation = rightAlignedAnnotation
     )
 
@@ -245,7 +245,7 @@ const val multiParagraphText = "```\ncode();\n```\n\nNormal text"
 @Composable
 fun ParagraphStyling() {
 
-    val annotated = multiParagraphText.patternAnnotatedString(
+    val annotated = multiParagraphText.richAnnotatedWith(
         patternAnnotation = codeBlockAnnotation
     )
 
@@ -291,7 +291,7 @@ val usernameToNameMap = mapOf(
 @Composable
 fun SimpleInlineExample() {
 
-    val styledComment = "Thanks @xavier, this is cool!".patternAnnotatedString(
+    val styledComment = "Thanks @xavier, this is cool!".richAnnotatedWith(
         patternAnnotation = usernameAnnotation
     )
 
@@ -338,7 +338,7 @@ fun CombinedExample() {
             "Coincidentally, I had an Apple and a strawberry today." +
             "(I'll star this repository!)"
 
-    val styledComment = userComment.patternAnnotatedString(
+    val styledComment = userComment.richAnnotatedWith(
         patternAnnotations = listOf(
             usernameAnnotation,
             italics,

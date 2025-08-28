@@ -238,6 +238,23 @@ fun SimpleInlineExample() {
     }
 }
 
+
+@Preview
+@Composable
+fun SimpleCheckboxExample() {
+
+    val styledComment = "_ Test checkbox 1\n_ Test checkbox 2".richAnnotatedWith(
+        patternAnnotation = checkBoxAnnotation
+    )
+
+    PreviewLayout {
+        Text(
+            text = styledComment.annotatedString,
+            inlineContent = styledComment.inlineContentMap
+        )
+    }
+}
+
 @Composable
 fun Pill(text: String) {
     Text(

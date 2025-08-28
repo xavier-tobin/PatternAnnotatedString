@@ -38,7 +38,7 @@ enum class PerformanceStrategy {
     Immediate,
 }
 
-internal fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: String): PatternAnnotatedString {
+fun List<PatternAnnotation>.calculatePatternAnnotatedString(text: String): PatternAnnotatedString {
     val allAnnotations = mutableListOf<AnnotatedString.Range<out AnnotatedString.Annotation>>()
     val backgrounds = mutableListOf<ParagraphBackgroundAnnotation>()
     val discoveredInlineContent = mutableListOf<DiscoveredInlineContent>()

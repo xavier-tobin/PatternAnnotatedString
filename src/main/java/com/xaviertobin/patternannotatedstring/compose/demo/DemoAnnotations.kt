@@ -1,5 +1,8 @@
 package com.xaviertobin.patternannotatedstring.compose.demo
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ParagraphStyle
@@ -100,3 +103,20 @@ val usernameAnnotation = inlineContentPatternAnnotation(
     }
 )
 
+val checkBoxAnnotation = inlineContentPatternAnnotation(
+    pattern = "^(_ )",
+    inlineContent = {
+        inlineTextContent(
+            width = 16.sp,
+            height = 16.sp,
+        ) {
+            // You can replace this with any Composable you want
+            Canvas(modifier = Modifier.size(16.dp)) {
+                drawCircle(
+                    color = Color.Gray,
+                    radius = size.height
+                )
+            }
+        }
+    }
+)

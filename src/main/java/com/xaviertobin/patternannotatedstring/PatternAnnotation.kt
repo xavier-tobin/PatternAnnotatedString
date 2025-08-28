@@ -1,13 +1,20 @@
 package com.xaviertobin.patternannotatedstring
 
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.Placeholder
+import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.em
 import java.util.regex.Pattern
 
 
@@ -41,7 +48,7 @@ data class MatchDetails(
     val group: String?
 )
 
-internal fun buildPatternAnnotation(
+fun buildCustomPatternAnnotation(
     pattern: String,
     caseSensitive: Boolean = false,
     literalPattern: Boolean = false,
@@ -75,7 +82,7 @@ fun basicPatternAnnotation(
     literalPattern: Boolean = false,
     caseSensitive: Boolean = false,
     spanStyle: SpanStyle? = null,
-) = buildPatternAnnotation(
+) = buildCustomPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     literalPattern = literalPattern,
@@ -86,10 +93,35 @@ fun inlineContentPatternAnnotation(
     pattern: String,
     caseSensitive: Boolean = false,
     inlineContent: InlineContentFunction,
-) = buildPatternAnnotation(
+) = buildCustomPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     inlineContent = inlineContent
+)
+
+fun inlineCanvasPatternAnnotation(
+    pattern: String,
+    width: TextUnit = 1.em,
+    height: TextUnit = 1.em,
+    placeholderAlignment: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Center,
+    caseSensitive: Boolean = false,
+    onDraw: DrawScope.() -> Unit,
+) = buildCustomPatternAnnotation(
+    pattern = pattern,
+    caseSensitive = caseSensitive,
+    inlineContent = {
+        InlineTextContent(
+            placeholder = Placeholder(
+                width = width,
+                height = height,
+                placeholderVerticalAlign = placeholderAlignment
+            )
+        ) {
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                this.onDraw()
+            }
+        }
+    }
 )
 
 fun paragraphPatternAnnotation(
@@ -98,7 +130,7 @@ fun paragraphPatternAnnotation(
     spanStyle: SpanStyle? = null,
     paragraphStyle: ParagraphStyle? = null,
     onDrawParagraphBackground: OnDrawBackground? = null,
-) = buildPatternAnnotation(
+) = buildCustomPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     spanStyle = spanStyle,
@@ -114,7 +146,7 @@ fun linkPatternAnnotation(
     focusedStyle: SpanStyle? = null,
     hoveredStyle: SpanStyle? = null,
     pressedStyle: SpanStyle? = null
-) = buildPatternAnnotation(
+) = buildCustomPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     spanStyle = spanStyle,
@@ -152,7 +184,7 @@ fun clickablePatternAnnotation(
     focusedStyle: SpanStyle? = null,
     hoveredStyle: SpanStyle? = null,
     pressedStyle: SpanStyle? = null
-) = buildPatternAnnotation(
+) = buildCustomPatternAnnotation(
     pattern = pattern,
     caseSensitive = caseSensitive,
     spanStyle = spanStyle,
@@ -186,7 +218,7 @@ internal fun rememberPatternAnnotation(
         inlineContentTag,
         linkAnnotationPlan
     ) {
-        buildPatternAnnotation(
+        buildCustomPatternAnnotation(
             pattern = pattern,
             caseSensitive = caseSensitive,
             literalPattern = literalPattern,

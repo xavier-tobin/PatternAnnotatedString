@@ -10,7 +10,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.text.TextLayoutResult
 
-
 data class ParagraphBackgroundsResult(
     val backgroundsToDraw: List<BackgroundsToDraw>,
     val onTextLayout: (textLayoutResult: (TextLayoutResult)) -> Unit

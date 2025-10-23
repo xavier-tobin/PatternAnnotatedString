@@ -5,13 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.em
 
 
 fun inlineTextContent(
     width: TextUnit,
     height: TextUnit,
-    placeholderVerticalAlign: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Center,
+    placeholderVerticalAlign: PlaceholderVerticalAlign = PlaceholderVerticalAlign.Bottom,
     content: @Composable (String) -> Unit
 ): InlineTextContent {
     return InlineTextContent(
